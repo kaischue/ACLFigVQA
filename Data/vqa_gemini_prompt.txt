@@ -12,7 +12,7 @@ You can use it as a base. Just reply with the questions in english and german. A
 
 Please use this JSON schema:
 
-QAPair = {'question_german': str, 'question_english: str, 'answer_english': str, 'answer_german': str}
+QAPair = {"question_german": str, "question_english": str, "answer_english": str, "answer_german": str}
 Return: list[QAPair]
 
-ONLY reply with the JSON, nothing else! No additional text, just the JSON!
+ONLY reply with the JSON, nothing else! No additional text, just the JSON! Ensure the response is a valid JSON object!

@@ -47,6 +47,11 @@ class GeminiModel:
         return self.model.generate_content(
             [self.prompt, self.vqa_templates, img, metadata_string])
 
+    def try_fix_json(self, broken_json, error_msg):
+        return self.model.generate_content(
+            [f"Can you please fix this broken JSON? I get this error msg:{error_msg}. Only reply with the fixed JSON "
+             f"string, nothing else! So that i can directly parse it!", broken_json])
+
 
 class QAPairGen(typing.TypedDict):
     question_german: str
@@ -58,13 +63,23 @@ class QAPairGen(typing.TypedDict):
 if __name__ == '__main__':
     model = GeminiModel()
     ds_iterator = iter(get_dataset_split_generator(split="train"))
-    ds_sample = next(ds_iterator)
+    i = 0
+    while i < 3:
+        ds_sample = next(ds_iterator)
 
-    plt.imshow(ds_sample["image"])
-    plt.show()
-    response = model.generate_qa(ds_sample)
+        plt.imshow(ds_sample["image"])
+        plt.show()
+        response = model.generate_qa(ds_sample)
 
-    json_response = json.loads(response.text)
+        try:
+            json_response = json.loads(response.text)
+        except json.JSONDecodeError as e:
+            print("Invalid JSON, prompting for fix...")
+            e_msg = str(e)
+            invalid_json = e.doc
+            fix_response = model.try_fix_json(invalid_json, e_msg)
+            json_response = json.loads(fix_response.text)
 
-    print(response.usage_metadata)
-    pprint(json_response)
+        print(response.usage_metadata)
+        pprint(json_response)
+        i += 1
