@@ -1,0 +1,18 @@
+Create a question about this figure
+It should be a visual question, meaning mention at least on visual attribute like color, position or orientation of the different plot elements.
+You should only be able to answer it if you look at the image, not just with extracted data as a table.
+But the question should not be too simple. Also, please provide the question in English and German. And then answer the question.
+Chose three random question templates as a base from the templates I provided to you. Not all templates fit all images.
+So choose on that fits and fill in the variables.
+Additionally, you also got the frist 10000 characters of research paper available as text from where the image was sourced from.
+At least on question should require additional context from the paper to be answered, but it should still be a visual question.
+You don't have to follow a template for this advanced question.
+Your questions do not have to match the template exactly.
+You can use it as a base. Just reply with the questions in english and german. And the answers in english and german.
+
+Please use this JSON schema:
+
+QAPair = {'question_german': str, 'question_english: str, 'answer_english': str, 'answer_german': str}
+Return: list[QAPair]
+
+ONLY reply with the JSON, nothing else! No additional text, just the JSON!
