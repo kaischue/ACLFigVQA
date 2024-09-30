@@ -71,6 +71,7 @@ def merge_metadata_with_dataset(dataset, metadata_df_):
                 sample['pdf_text'] = extract_text_from_pdf(pdf_path)
 
         updated_samples_.append({
+            'img_file_name': img_file_name,
             'image': sample['image'],
             'label': sample['label'],
             'caption': sample.get('caption', ''),
@@ -88,6 +89,7 @@ if __name__ == '__main__':
     ds = load_dataset("imagefolder", data_dir="Data/VQAMeta/training_data")
 
     features = Features({
+        'img_file_name': Value('string'),
         'image': Image(),
         'caption': Value('string'),
         'inline_reference': Value('string'),
