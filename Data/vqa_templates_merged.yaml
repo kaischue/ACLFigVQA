@@ -1,0 +1,215 @@
+Simple_Retrieval:
+  Positional:
+    - Topmost/Leftmost bar
+    - Bottommost/Rightmost bar
+    - Leftmost topmost bar
+    - Leftmost bottommost bar
+    - Rightmost topmost bar
+    - Rightmost bottommost bar
+    - First bar from the top/left in the second group from the top/left
+    - First bar from the bottom/right in the second group from the bottom/right
+    - Second bar from the bottom/right in the first group from the bottom/right
+    - Second bar from the right/bottom in the first group from the left/top
+    - Second bar from the top/left
+    - Second bar from the right/bottom
+    - How many bars are there on the <nth> tick from the <direction>? #12, 13, 14, 15
+    - What is the label of the <nth> group of bars from the <direction>? #23, 24
+    - How many groups of bars are there? #9
+    - How many major ticks are there on the independent axis of the chart? #6a
+    - List all the major ticks on independent axis from <direction>? #6b, 6c, 6d, 6e
+    - How many bars are there? #7b
+    - What is the type of chart? #7a
+    - How many lines are visually present? #7
+    - Is the number of lines equal to the number of legend labels? #18
+    - Is the number of lines equal to the number of mark labels? #18a
+    - Where does the legend appear in the chart? #3
+    - How many legend labels are there? #4
+    - What is the orientation of legend labels? #5
+    - How many '{{x_axis_label}}' are there in the chart? #6
+    - What is the title of the chart? #28
+    - Is there a title in the chart? #28a
+    - Does '{{series_label}}' appear as one of the legend labels in the graph? #29
+    - What is the label or title of the independent axis? #30
+    - What is the label or title of the dependent axis? #31
+    - What is the difference between two consecutive major ticks of the <axis> variable? #26
+    - Are the values on the major ticks of the <axis> axis written in scientific E-notation? #27
+    - What is the maximum value on independent axis? #80
+    - What is the starting value on independent axis? #81
+    - What is the orientation of the text of independent axis title? #82
+    - What is the maximum value on dependent axis? #84
+    - Is dependent axis on a logarithmic scale or Linear scale? #85
+    - What is the starting value on dependent axis? #86
+    - What is the orientation of text of dependent axis title? #87
+    - Is there a legend title? #89
+    - What is the title of legend? #90
+    - What is the orientation of boxes in the chart? #152
+    - Are the bars grouped? #74
+    - Are the bars stacked? #75
+  Color:
+    - Which legend represented by <color>?
+    - What is the color of <legend>?
+    - What does the <color> represent?
+    - What segment is represented by <color>?
+    - What color represents the data series with the legend label '<legend>'? #gen
+    - What is the color of the line/bars associated with '<x_axis_label>'? #gen
+    - Is there a data series represented by the color <color>? #gen
+Simple_Calculation_1-Step:
+  Positional:
+    - Which one is greater, <x1> or <x2>?
+    - What is the difference between the leftmost and rightmost bars?
+    - What is the ratio between the two leftmost bars?
+    - What is the ratio between the leftmost and rightmost bar in the first group from the left?
+    - What is the '{{y_axis_label}}' at {{x_tick}}? #33
+    - Does the chart contain any zero data values? #1
+    - Are the number of bars on each tick equal to the number of data series? #10
+  Color:
+    - Leftmost <color> data
+    - Rightmost <color> data
+    - Second from the left <color> data
+    - Second from the right <color> data
+    - What is the value of <color> line/bars in <x - axis - label>?
+    - What is the ratio of the largest <color1> bar to the smallest <color2> bar? #gen
+    - Is the sum of all <color> bars/data points greater than <value>? #gen
+Complex_Calculation_Multi-Step:
+  Positional:
+    - Divide the sum of largest and lowest values by <n>
+    - Sum pie segments above <value>
+    - What is the sum of top three values?
+    - What is the sum of the bars in the second group from the left?
+    - What is the sum of the bars in the first group from the right?
+    - What is the average of the bars in the second group from the right?
+    - How many bars in the leftmost group have a value over <N>?
+    - What is the difference between the maximum values of the two leftmost bar groups?
+    - Is the sum of the two middle bars greater than the sum of top and bottom bars?
+    - What is the average of <legend - label> from <x - label - 1> to <x - label - 2>?
+    - What is the average of the highest and lowest value of <legend - label>?
+    - What is the sum of the average of <legend - label - 1> and average of <legend - label - 2>?
+    - What is the sum/difference of the maximum of <legend - label - 1> and minimum of <legend - label - 2>?
+    - Sum up the medians of all the data series in this chart
+    - What is the average of all values above <value>?
+    - What is the sum of the largest and smallest difference between <legend - label - 1> and <legend - label - 2>?
+    - What is the maximum/minimum difference between <legend - label - 1> and <legend - label - 2>?
+    - What is the ratio of the largest to the smallest pie segment?
+    - What is the ratio of the two largest/smallest segments?
+    - What is the difference between maximum and minimum of <legend - label>?
+    - What is the sum of the second highest and second lowest value of <legend - label>?
+    - What is the sum of two middle values of <legend - label>?
+    - Product of two smallest values in the graph
+    - In how many cases, is the number of bars for a given '{{x_axis_label}}' not equal to the number of legend labels? #32
+    - What is the '{{y_axis_label}}' of {{series_value}} at {{x_tick}}? #34
+    - Across all '{{x_axis_label}}', what is the maximum value of '{{y_axis_label}}'? #38, 38a
+    - Across all '{{x_axis_label}}', what is the minimum value of '{{y_axis_label}}'? #39, 39a
+    - For which value of '{{x_axis_label}}' is '{{y_axis_label}}' at its minimum? #41, 41a
+    - For which major tick on the independent axis is '{{y_axis_label}}' at its maximum? #40a
+    - Across all '{{x_axis_label}}', what is the maximum '{{y_axis_label}}' for '{{series_label}}'? #42, 42a
+    - Across all '{{x_axis_label}}', what is the minimum '{{y_axis_label}}' for '{{series_label}}'? #43, 43a
+    - For which value of '{{x_axis_label}}' was the '{{y_axis_label}}' for '{{series_label}}' maximum? #44, 44a
+    - For which value of '{{x_axis_label}}' was the '{{y_axis_label}}' for '{{series_label}}' minimum? #45, 45a
+    - What is the sum of '{{y_axis_label}}'? #46
+    - What is the difference between the value of '{{y_axis_label}}' at {{x_tick_1}} and {{x_tick_2}} of '{{x_axis_label}}'? #47
+    - What is the average '{{y_axis_label}}' per '{{x_axis_label}}'? #48
+    - What is the median '{{y_axis_label}}'? #49
+    - What is the total '{{y_axis_label}}' for '{{series_label}}' in the graph? #50
+    - What is the difference between the value of '{{y_axis_label}}' for '{{series_label}}' at {{x_tick_1}} and that at {{x_tick_2}}? #51
+    - What is the difference between the value of '{{y_axis_label}}' for '{{series_label_1}}' at {{x_tick}} and the value of '{{y_axis_label}}' for '{{series_label_2}}' at {{x_tick}}? #52
+    - What is the average '{{y_axis_label}}' for '{{series_label}}' per '{{x_axis_label}}'? #53
+    - What is the maximum number of components stacked in every bar? #76
+    - What is the minimum number of components stacked in every bar? #77
+    - How many lines are there in the chart? #78
+    - What is the difference between the '{{y_axis_label}}' for '{{series_label_1}}' and  '{{y_axis_label}}' for '{{series_label_2}}' at {{x_tick}}? #55
+    - What is the average value of the <color> data points/bars that are above/below <value>? #gen
+    - What percentage of the total is represented by the <color> data series? #gen
+    - What is the difference between the average value of <color1> bars and the average value of <color2> bars? #gen
+    - What is the weighted average of all data series, where the weights are determined by the lightness/darkness of their respective colors? #gen
+  Color:
+    - What is the difference between the rightmost <color - 1> bar and leftmost <color - 2> bar?
+    - What is the average of <color> bars values?
+    - How many <color> bars are larger than <N>?
+    - What is the average of the <color - 1> sum and <color - 2> sum?
+    - What is the least difference between the <color - 1> and <color - 2> bars/line?
+    - Sum of the first <color - 1> and last <color - 2> bars/line points
+    - Difference between the two lowest <color> bars
+    - Add largest and smallest <color> line/bar values and divide by 2
+    - Sum/Average of <color - 1> and <color - 2> values in <x - axis - label>?
+    - Sum two rightmost values of <color> graph
+    - How many <color> data points are above <value>?
+    - What is the sum/average of two smallest/largest <color> bars?
+    - What is the ratio of <color - 1> and <color - 2> segments?
+    - Sum of lowest and median values of <color> graph/bars
+    - What is the average of the rightmost three points of <color> line?
+    - What’s the ratio of the largest and the third/second-largest <color> bar?
+    - What's the product of <color> bars in India and Japan?
+    - What is the median value of the <color> bars/line?
+    - What is the average of the <color - 1> median and <color - 2> median?
+    - What is the maximum value in the <color> bars/line?
+    - What is the minimum value in the <color> bars/line?
+    - What is the sum of <color> bars/line?
+    - Sum of highest points in <color - 1> and <color - 2> lines/bars
+    - Take the sum of the two smallest <color - 1> bars and smallest <color - 2> bars, deduct the smaller value from the larger value, what’s the result?
+Logical_Reasoning:
+  Positional:
+    - Which two x-axis labels of <legend - label> sums up to <value>?
+    - Which two x-axis labels of <legend - label> have a difference of <value>?
+    - Which x-axis label has the maximum/minimum difference between <legend - label - 1> and minimum of <legend - label - 2>?
+    - Which x-axis label witnessed the smallest value of <legend - label>?
+    - Which label contains largest/smallest values across all labels?
+    - When did line <legend - label> peak?
+    - What is the median/mode of <legend - label>?
+    - What is the negative peak of <legend - label>?
+    - What is the largest/smallest value of <legend - label>?
+    - Which x-axis label is second highest for <legend - label>?
+    - Does the '{{series_label}}' monotonically increase over the '{{x_axis_label}}'? #35
+    - In how many '{{x_axis_label}}' is the '{{y_axis_label}}' greater than {{value}}? #56, 56a, 56b, 56c
+    - What is the ratio of the values of '{{y_axis_label}}' at {{x_tick_1}} to that at {{x_tick_2}}? #58
+    - Is the value of '{{y_axis_label}}' at {{x_tick_1}} less than that at {{x_tick_2}}? #59, 59a
+    - For how many '{{x_axis_label}}' is the value of '{{y_axis_label}}' for '{{series_label}}' greater than {{value}}? #60, 60a, 60b, 60c
+    - What is the ratio of the values of '{{y_axis_label}}' for '{{series_label}}' at {{x_tick_1}} to that at {{x_tick_2}}? #61
+    - Is the value of '{{y_axis_label}}' for '{{series_label}}' at {{x_tick_1}} less than that at {{x_tick_2}}? #62, 62a
+    - Is the difference between the value of '{{y_axis_label}}' at {{x_tick_1}} and {{x_tick_2}} greater than the difference between any two '{{x_axis_label}}'? #63, 63a
+    - What is the difference between the maximum and the second maximum value of '{{y_axis_label}}'? #64
+    - Is the sum of the value of '{{y_axis_label}}' at {{x_tick_1}} and {{x_tick_2}} greater than the maximum value of '{{y_axis_label}}' across all '{{x_axis_label}}'? #65, 65a,65b, 65c
+    - What is the difference between the maximum and minimum values of '{{y_axis_label}}'? #66
+    - In how many '{{x_axis_label}}' is the value of '{{y_axis_label}}' greater than the average value of '{{y_axis_label}}' taken over all '{{x_axis_label}}'? #67, 67a
+    - Is the difference between the value of '{{y_axis_label}}' for '{{series_label_1}}' at {{x_tick_1}} and {{x_tick_2}} greater than the difference between the value of '{{y_axis_label}}' for '{{series_label_2}}' at {{x_tick_1}} and {{x_tick_2}}? #68, 68a
+    - What is the difference between the maximum and second maximum values of '{{y_axis_label}}' for '{{series_label}}'? #69
+    - What is the difference between the maximum and minimum values of '{{y_axis_label}}' for '{{series_label}}'? #70
+    - In how many '{{x_axis_label}}' is the value of '{{y_axis_label}}' for '{{series_label}}' greater than the average value of '{{y_axis_label}}' for '{{series_label}}' taken over all '{{x_axis_label}}'? #71, 71a, 71b,71c
+    - Is it the case that for every '{{x_axis_label}}', the sum of '{{y_axis_label}}' for '{{series_label_1}}' and '{{series_label_2}}' is greater than the value of '{{y_axis_label}}' for '{{series_label_3}}'? #72
+    - Is the sum of the values of '{{y_axis_label}}' for '{{series_label_1}}' at {{x_tick_1}} and {{x_tick_2}} greater than the maximum value of '{{y_axis_label}}' for '{{series_label_2}}' across all '{{x_axis_label}}'? #73, 73a, 73b, 73c
+    - Is independent axis categorical or numerical? #79
+    - Other than the graph objects, is there any other text present on the graph plot area? #91, 91a
+    - Which '{{x_axis_label}}' has the maximum difference between '{{series_label_1}}' and '{{series_label_2}}'? #92, 93
+    - Which data series has the highest <statistic>? #94, 96, 98, 100, 102, 106, 108, 112, 114
+    - Which data series has the lowest <statistic>? #95, 97, 99, 101, 103, 107, 109, 113, 115
+    - Is the '{{series}}' monotonically <increasing/decreasing>? #116, 117
+    - Between '{{series1}}' and '{{series2}}', which one has the peak value of '{{y_axis}}'? #118
+    - Which data series has the <minimum/maximum> difference in '{{y_axis}}'? #119, 120
+    - Does '{{series}}' have <low/high> <positive/negative> correlation? #121, 122, 123, 124
+    - What is the slope of line of best fit? #125
+    - What is the correlation between '{{series1}}' and '{{series2}}'? #129
+    - Which '{{x_axis}}' for '{{value}}' has the highest median of '{{y_axis}}'? #130
+    - Which '{{x_axis}}' has the <highest/least> <median/upper quartile/lower quartile/upper whisker/lower whisker/inter-quartile range/extreme range> of '{{y_axis}}'? #131, 132, 133, 134, 135, 136, 137, 138, 139, 140, 141, 145, 147, 148
+    - Which '{{x_axis}}' has <upper/lower> quartile value <same as/ equal to> that of '{{value}}'? # 142, 144
+    - Which '{{x_axis}}' has median same as that of '{{value}}'? #143
+    - Does any '{{x_axis}}' have equal inter-quartile range? #146, 146a
+    - Between '{{series1}}' and '{{series2}}' of {{category}}, which one has the higher upper extreme value? #149
+    - Is the data skewed or normally distributed for {{category}} at {{series}}? #150, 151 #Combined
+    - <In how many/For what> {{x_axis}}, is the <median/upper quartile/lower quartile/maximum value/minimum value> <greater/less> than {{value}}? #154, 154a, 155, 155a, 156, 156a, 157, 157a, 158, 158a, 159, 159a, 160, 160a, 161, 161a, 162, 162a, 163, 163a
+    - What is the ratio of <upper and lower quartile/maximum and minimum> value at '{{x_tick}}'? #164, 165
+    - Is the value of <median/upper quartile/lower quartile/maximum value/minimum value> of '{{y_axis_label}}' at '{{x_tick_1}}' less than that at '{{x_tick_2}}'? #166, 167, 168, 169, 170,
+    - Which major ticks has the value of <median/upper quartile/lower quartile/maximum value/minimum value> <less/greater> than that at '{{x_tick}}'? #166a, 167a, 167b, 168a, 168b, 169a, 169b, 170a, 170b
+  Color:
+    - Which color has the highest/smallest values?
+    - Is the sum of lowest value of <color - 1> and <color - 2> bar greater than largest value of <color - 3> bar?
+    - What’s the ratio of the <x - axis - label - 1> <color - 1> bar and the <x - axis - 2> <color - 2> bar?
+    - Is the median value of <color - 1> bars greater than the median value of <color - 2> bars?
+    - Is the median of all the <color - 1> bars greater than the largest value of <color - 2> bar?
+    - Is the total of all <color - 1> bars greater than the total of all <color - 2> bars?
+    - How many values are equal in <color - 1> line/bar?
+    - When did <color> line reached the peak?
+    - Which color represents the data series with the highest/lowest overall value? #gen
+    - Are there any <color> bars/data points that have the same value as any <color2> bars/data points? #gen
+    - Does the <color> data series show a general upward/downward trend? #gen
+    - Is the distribution of <color> values skewed positive/negative? #gen
+    - Which two colors have the greatest/smallest difference in their average values? #gen
+    - Which color contributes the most/least to the total represented in the chart? #gen

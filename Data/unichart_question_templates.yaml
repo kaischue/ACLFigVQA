@@ -1,0 +1,90 @@
+1) First bar from the top/left in the second group from the top/left
+2) First bar from the bottom/right in the second group from the bottom/right
+3) Second bar from the bottom/right in the first group from the bottom/right
+4) Second bar from the right/bottom in the first group from the left/top
+5) Topmost/Leftmost bar
+6) Bottommost/Rightmost bar
+7) Second bar from the top/left
+8) Second bar from the right/bottom
+9) Leftmost topmost bar
+10) Leftmost bottommost bar
+11) Rightmost topmost bar
+12) Rightmost bottommost bar
+13) Leftmost <color> data
+14) Rightmost <color> data
+15) Second from the left <color> data
+16) Second from the right <color> data
+17) Which legend represented by <color>?
+18) What is the color of <legend>?
+19) Which one is greater, <x1> or <x2>?
+20) Divide the sum of largest and lowest values by <n>
+21) When did line <legend - label> peak?
+22) What is the difference between maximum and minimum of <legend - label>?
+23) Sum pie segments above <value>
+24) What is the sum of top three values?
+25) What is the median/mode of <legend - label>?
+26) What is the negative peak of <legend - label>?
+27) What is the largest/smallest value of <legend - label>?
+28) Which two x-axis labels of <legend - label> sums up to <value>?
+29) What is the sum of the second highest and second lowest value of <legend - label>?
+30) Which x-axis label is second highest for <legend - label>?
+31) What is the sum of two middle values of <legend - label>?
+32) Which two x-axis labels of <legend - label> have a difference of <value> ?
+33) What is the average of <legend - label> from <x - label - 1> to <x - label - 2>?
+34) What is the average of the highest and lowest value of <legend - label - l>?
+35) What is the sum of the average of <legend - label - 1> and average of <legend - label - 2>?
+36) What is the sum/difference of the maximum of <legend - label - 1> and minimum of <legend - label - 2>?
+37) Which x-axis label has the maximum/minimum difference between <legend - label - 1> and minimum of <legend - label - 2>?
+38) Which x-axis label witnessed the smallest value of <legend - label>?
+39) Which label contains largest/smallest values across all labels?
+40) Sum up the medians of all the data series in this chart
+41) What is the average of all values above <value>?
+42) What is the sum of the largest and smallest difference between <legend - label - 1> and <legend - label - 2>?
+43) What is the maximum/minimum difference between <legend - label - 1> and <legend - label - 2>?
+44) What is the ratio of the largest to the smallest pie segment?
+45) What is the ratio of the two largest/smallest segments?
+46) What is the difference between the leftmost and rightmost bars?
+47) What is the sum of the bars in the second group from the left?
+48) What is the sum of the bars in the first group from the right?
+49) What is the ratio between the two leftmost bars?
+50) What is the difference between the rightmost <color - 1> bar and leftmost <color - 2> bar?
+51) What is the average of <color> bars values?
+52) How many <color>bars are larger than <N> ?
+53) What is the average of the bars in the second group from the right?
+54) How many bars in the leftmost group have a value over <N>?
+55) What does the <color> represent?
+56) What is the median value of the <color> bars/line?
+57) What is the average of the <color - 1> sum and <color - 2> sum?
+58) What is the average of the <color - 1> median and <color - 2> median?
+59) What is the least difference between the <color - 1> and <color - 2> bars/line?
+60) What is the ratio between the leftmost and rightmost bar in the first group from the left?
+61) What is the maximum value in the <color> bars/line?
+62) What is the minimum value in the <color> bars/line?
+63) What is the sum of <color> bars/line?
+64) What is the difference between the maximum values of the two leftmost bar groups?
+65) Sum of the first <color - 1> and last <color - 2> bars/line points
+66) Difference between the two lowest <color> bars
+67) Add largest and smallest <color> line/bar values and divide by 2
+68) What is the value of <color> line/bars in <x - axis - label>?
+69) Sum/Average of <color - 1> and <color - 2> values in <x - axis - label>?
+70) Sum of highest points in <color - 1> and <color - 2> lines/bars
+71) Which color has the highest/smallest values?
+72) How many values are equal in <color - 1> line/bar?
+73) Sum two rightmost values of <color> graph
+74) Product of two smallest values in the graph
+75) Sum of lowest and median values of <color> graph/bars
+76) When did <color> line reached the peak?
+77) What is the average of the rightmost three points of <color> line?
+78) How many <color> data points are above <value>?
+79) What’s the ratio of the largest and the third/second-largest <color> bar?
+80) Is the sum of lowest value of <color - 1> and <color - 2> bar greater than largest value of <color - 3> bar?
+81) Is the median value of <color - 1> bars greater than the median value of <color - 2> bars?
+82) Is the median of all the <color - 1> bars greater than the largest value of <color - 2> bar?
+83) What’s the product of <color> bars in India and Japan?
+84) Is the sum of the two middle bars greater than the sum of top and bottom bars?
+85) What’s the ratio of the <x - axis - label - 1> <color - 1> bar and the <x - axis - 2> <color - 2> bar?
+86) Is the total of all <color - 1> bars greater than the total of all <color - 2> bars?
+87) Take the sum of the two smallest <color - 1> bars and smallest <color - 2> bars, deduct the smaller value from the larger value, what’s the result?
+88) What is the sum/average of two smallest/largest <color> bars?
+89) What is the ratio of <color - 1> and <color - 2> segments?
+90) What segment is represented by <color>?

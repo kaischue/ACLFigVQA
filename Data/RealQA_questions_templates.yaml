@@ -1,0 +1,235 @@
+'1': Does the chart contain any zero data values?
+'10': Are the number of bars on each tick equal to the number of data series?
+'100': Which data series has the highest variance?
+'101': Which data series has the lowest variance?
+'102': Which data series has the highest standard deviation?
+'103': Which data series has the lowest standard deviation?
+'104': For which '{{x_axis}}' are the '{{series1}}' greater than '{{series2}}'?
+'104a': Which '{{x_axis}}' have the value of '{{series1}}' greater than the value of '{{series2}}', arranged in increasing order of difference between the '{{series1}}' and '{{series2}}'?
+'105': For which '{{x_axis}}' are the '{{series1}}' lesser than '{{series2}}'?
+'105a': Which '{{x_axis}}' have the value of '{{series1}}' lesser than value of '{{series2}}', arranged in increasing order of difference between the value of '{{series1}}' and than value of '{{series2}}'?
+'106': Which data series has the highest mean?
+'107': Which data series has the lowest mean?
+'108': Which data series has the highest median?
+'109': Which data series has the lowest median?
+'112': Which data series has the highest variance?
+'113': Which data series has the lowest variance?
+'114': Which data series has the highest standard deviation?
+'115': Which data series has the lowest standard deviation?
+'116': Is the '{{series}}' monotonically increasing?
+'117': Is the '{{series}}' monotonically decreasing?
+'118': Between '{{series1}}' and '{{series2}}', which one has the peak value of '{{y_axis}}'?
+'119': Which data series has the minimum difference in '{{y_axis}}'?
+'12': How many bars are there on the {{nth}} tick from the {{direction}},visually?
+'120': Which data series has the maximum difference in '{{y_axis}}'?
+'121': Does '{{series}}' have low positive correlation?
+'122': Does '{{series}}' have high positive correlation?
+'123': Does '{{series}}' have low negative correlation?
+'124': Does '{{series}}' have high negative correlation?
+'125': What is the slope of line of best fit?
+'129': What is the correlation between '{{series1}}' and '{{series2}}'?
+'13': How many bars are there on the {{nth}} tick from the {{direction}},visually?
+'130': Which '{{x_axis}}' for '{{value}}' has the highest median of '{{y_axis}}'?
+'131': Which '{{x_axis}}' has the highest median of '{{y_axis}}'?
+'132': Which '{{x_axis}}' has the least median of '{{y_axis}}'?
+'133': Which '{{x_axis}}' has the highest upper quartile value of '{{y_axis}}'?
+'134': Which '{{x_axis}}' has the least upper quartile value of '{{y_axis}}'?
+'135': Which '{{x_axis}}' has the highest lower quartile value of '{{y_axis}}'?
+'136': Which '{{x_axis}}' has the least lower quartile value of '{{y_axis}}'?
+'137': Which '{{x_axis}}' has the least upper whisker value of '{{y_axis}}'?
+'138': Which '{{x_axis}}' has the highest upper whisker value of '{{y_axis}}'?
+'139': Which '{{x_axis}}' has the highest lower whisker value of '{{y_axis}}'?
+'14': How many bars are there on the {{nth}} tick from the {{direction}},visually?
+'140': Which '{{x_axis}}' has the least lower whisker value of '{{y_axis}}'?
+'141': Which '{{x_axis}}' has the highest inter-quartile range of '{{y_axis}}'?
+'142': Which '{{x_axis}}' has upper quartile value same as that of '{{value}}'?
+'143': Which '{{x_axis}}' has median same as that of '{{value}}'?
+'144': Which '{{x_axis}}' have lower quartile value equal to upper quartile value as that at '{{value}}'?
+'145': Which '{{x_axis}}' has the least inter-quartile range of '{{y_axis}}'?
+'146': Does any '{{x_axis}}' have equal inter-quartile range?
+'146a': What '{{x_axis}}' have equal inter-quartile range?
+'147': Which '{{x_axis}}' has the least extreme range of '{{y_axis}}'?
+'148': Which '{{x_axis}}' has the highest extreme range of '{{y_axis}}'?
+'149': Between '{{series1}}' and '{{series2}}' of {{category}}, which one has the higher upper extreme value?
+'15': How many bars are there on the {{nth}} tick from the {{direction}},visually?
+'150': Is the data skewed or normally distributed for {{category}} at {{series}}?
+'151': How is the data skewed for {{category}} at {{series}}?
+'152': What is the orientation of boxes in the chart?
+'154': In how many {{x_axis}}, is the median greater than {{value}}?
+'154a': For what {{x_axis}} are the median greater than {{value}}?
+'154b': What {{x_axis}} have the median greater than {{value}}, arranged in increasing order of difference between median and {{value}}?
+'155': In how many {{x_axis}}, is the upper quartile greater than {{value}}?
+'155a': For what '{{x_axis}}' are the upper quartile greater than {{value}}?
+'155b': What '{{x_axis}}' have the upper quartile greater than {{value}}, arranged in increasing order of difference between upper quartile and {{value}}?
+'156': In how many '{{x_axis}}', is the lower quartile greater than {{value}}?
+'156a': For what '{{x_axis}}' are the lower quartile greater than {{value}}?
+'156b': What '{{x_axis}}' have the lower quartile greater than {{value}}, arranged in increasing order of difference between lower quartile and {{value}}?
+'157': In how many '{{x_axis}}', is the maximum value greater than {{value}}?
+'157a': For what '{{x_axis}}' are the maximum value greater than {{value}}?
+'157b': What '{{x_axis}}' have the maximum value greater than {{value}}, arranged in increasing order of difference between maximum value and {{value}}?
+'158': In how many '{{x_axis}}', is the minimum value greater than {{value}}?
+'158a': For what '{{x_axis}}' are the minimum value greater than {{value}}?
+'158b': What '{{x_axis}}' have the minimum value greater than {{value}}, arranged in increasing order of difference between minimum value and {{value}}?
+'159': In how many '{{x_axis}}', is the median less than {{value}}?
+'159a': For what '{{x_axis}}' are the median less than {{value}}?
+'159b': What '{{x_axis}}' have the median less than {{value}}, arranged in increasing order of difference between median and {{value}}?
+'160': In how many '{{x_axis}}', is the upper quartile less than {{value}}?
+'160a': For what '{{x_axis}}' are the upper quartile less than {{value}}?
+'160b': What '{{x_axis}}' have the upper quartile less than {{value}}, arranged in increasing order of difference between upper quartile and {{value}}?
+'161': In how many '{{x_axis}}', is the lower quartile less than {{value}}?
+'161a': For what '{{x_axis}}' are the lower quartile less than {{value}}?
+'161b': What '{{x_axis}}' have the lower quartile less than {{value}}, arranged in increasing order of difference between lower quartile and {{value}}?
+'162': In how many '{{x_axis}}', is the maximum value less than {{value}}?
+'162a': For what '{{x_axis}}' are the maximum value less than {{value}}?
+'162b': What '{{x_axis}}' have the maximum value less than {{value}}, arranged in increasing order of difference between maximum value and {{value}}?
+'163': In how many '{{x_axis}}', is the minimum value less than {{value}}?
+'163a': For what '{{x_axis}}' are the minimum value less than {{value}}?
+'163b': What '{{x_axis}}' have the minimum value less than {{value}}, arranged in increasing order of difference between minimum value and {{value}}?
+'164': What is the ratio of upper and lower quartile value at '{{x_tick}}'?
+'165': What is the ratio of maximum and minimum value at '{{x_tick}}'?
+'166': Is the value of median of '{{y_axis}}' at '{{x_tick_1}}' less than that at '{{x_tick_2}}'?
+'166a': Which major ticks has the value of median less than that at '{{x_tick}}'?
+'167': Is the value of upper quartile of '{{y_axis_label}}' at '{{x_tick_1}}' less than that at '{{x_tick_2}}'?
+'167a': Which major ticks have a value of upper quartile less than that at '{{x_tick}}'?
+'167b': Which major ticks have a value of upper quartile greater than that at '{{x_tick}}'?
+'167c': Which major ticks have a value of upper quartile less than that at '{{x_tick}}', arranged in increasing order of difference between the upper quartiles?
+'167d': Which major ticks have a value of upper quartile greater than that at '{{x_tick}}', arranged in increasing order of difference between the upper quartiles?
+'168': Is the value of lower quartile of '{{y_axis_label}}' at '{{x_tick_1}}' less than that at '{{x_tick_2}}'?
+'168a': Which major ticks have a value of lower quartile less than that at '{{x_tick}}'?
+'168b': Which major ticks have a value of lower quartile greater than that at '{{x_tick}}'?
+'168c': Which major ticks have a value of lower quartile less than that at '{{x_tick}}', arranged in increasing order of difference between the lower quartiles?
+'168d': Which major ticks have a value of lower quartile greater than that at '{{x_tick}}', arranged in increasing order of difference between the lower quartiles?
+'169': Is the maximum value of '{{y_axis_label}}' at '{{x_tick_1}}' less than that at '{{x_tick_2}}'?
+'169a': Which major ticks have a maximum value less than that at '{{x_tick}}'?
+'169b': Which major ticks have a maximum value greater than that at '{{x_tick}}'?
+'169c': Which major ticks have a maximum value less than that at '{{x_tick}}', arranged in increasing order of difference between the maximum values?
+'169d': Which major ticks have a maximum value greater than that at '{{x_tick}}', arranged in increasing order of difference between the maximum values?
+'170': Is the minimum value of '{{y_axis_label}}' at '{{x_tick_1}}' less than that at '{{x_tick_2}}'?
+'170a': Which major ticks have a minimum value less than that at '{{x_tick}}'?
+'170b': Which major ticks have a minimum value greater than that at '{{x_tick}}'?
+'170c': Which major ticks have a minimum value less than that at '{{x_tick}}', arranged in increasing order of difference between the minimum values?
+'170d': Which major ticks have a minimum value greater than that at '{{x_tick}}', arranged in increasing order of difference between the minimum values?
+'18': Is the number of lines equal to the number of legend labels?
+18a: Is the number of lines equal to the number of mark labels?
+'23': What is the label of the {{nth}} group of bars from the {{direction}}?
+'24': What is the label of the {{nth}} group of bars from the {{direction}}?
+'26': What is the difference between two consecutive major ticks of the {{axis}} variable?
+'27': Are the values on the major ticks of the {{axis}} axis written in scientific E-notation?
+'28': What is the title of the chart?
+'28a': Is there a title in the chart?
+'29': Does '{{series_label}}' appear as one of the legend labels in the graph?
+'3': Where does the legend appear in the chart?
+'30': What is the label or title of the independent axis?
+'31': What is the label or title of the dependent axis?
+'32': In how many cases, is the number of bars for a given '{{x_axis_label}}' not equal to the number of legend labels?
+'33': What is the '{{y_axis_label}}' at {{x_tick}}?
+'34': What is the '{{y_axis_label}}' of {{series_value}} at {{x_tick}}?
+'35': Does the '{{series_label}}' monotonically increase over the '{{x_axis_label}}'?
+'38': Across all '{{x_axis_label}}', what is the maximum value of '{{y_axis_label}}'?
+'38a': Across all major ticks on the independent axis, what is the maximum value of '{{y_axis_label}}'?
+'39': Across all '{{x_axis_label}}', what is the minimum value of '{{y_axis_label}}'?
+'39a': Across all major ticks on the independent axis, what is the minimum value of '{{y_axis_label}}'?
+'4': How many legend labels are there?
+'40a': For which major tick on the independent axis is '{{y_axis_label}}' at its maximum?
+'41': For which value of '{{x_axis_label}}' is '{{y_axis_label}}' at its minimum?
+'41a': For which major tick on the independent axis is '{{y_axis_label}}' at its minimum?
+'42': Across all '{{x_axis_label}}', what is the maximum '{{y_axis_label}}' for '{{series_label}}'?
+'42a': Across all major ticks on the independent axis, what is the maximum '{{y_axis_label}}' for '{{series_label}}'?
+'43': Across all '{{x_axis_label}}', what is the minimum '{{y_axis_label}}' for '{{series_label}}'?
+'43a': Across all major ticks on the independent axis, what is the minimum '{{y_axis_label}}' for '{{series_label}}'?
+'44': For which value of '{{x_axis_label}}' was the '{{y_axis_label}}' for '{{series_label}}' maximum?
+'44a': For which major tick on the independent axis was the '{{y_axis_label}}' for '{{series_label}}' maximum?
+'45': For which value of '{{x_axis_label}}' was the '{{y_axis_label}}' for '{{series_label}}' minimum?
+'45a': For which major tick on the independent axis was the '{{y_axis_label}}' for '{{series_label}}' minimum?
+'46': What is the sum of '{{y_axis_label}}'?
+'47': What is the difference between the value of '{{y_axis_label}}' at {{x_tick_1}} and {{x_tick_2}} of '{{x_axis_label}}'?
+'48': What is the average '{{y_axis_label}}' per '{{x_axis_label}}'?
+'49': What is the median '{{y_axis_label}}'?
+'5': What is the orientation of legend labels?
+'50': What is the total '{{y_axis_label}}' for '{{series_label}}' in the graph?
+'51': What is the difference between the value of '{{y_axis_label}}' for '{{series_label}}' at {{x_tick_1}} and that at {{x_tick_2}}?
+'52': What is the difference between the value of '{{y_axis_label}}' for '{{series_label_1}}' at {{x_tick}} and the value of '{{y_axis_label}}' for '{{series_label_2}}' at {{x_tick}}?
+'53': What is the average '{{y_axis_label}}' for '{{series_label}}' per '{{x_axis_label}}'?
+'55': What is the difference between the '{{y_axis_label}}' for '{{series_label_1}}' and '{{y_axis_label}}' for '{{series_label_2}}' at {{x_tick}}?
+'56': In how many '{{x_axis_label}}' is the '{{y_axis_label}}' greater than {{value}}?
+'56a': For how many major ticks on the independent axis is the value of '{{y_axis_label}}' greater than {{value}}?
+'56b': What '{{x_axis_label}}' have '{{y_axis_label}}' greater than {{value}}?
+'56c': For what major ticks on the independent axis is the value of '{{y_axis_label}}' greater than {{value}}?
+'56d': What '{{x_axis_label}}' have the value of '{{y_axis_label}}' greater than {{value}}, arranged in increasing order of difference between the value of '{{y_axis_label}}' and {{value}}?
+'56e': What major ticks on the independent axis have the value of '{{y_axis_label}}' greater than {{value}}, arranged in increasing order of difference between the value of '{{y_axis_label}}' and {{value}}?
+'58': What is the ratio of the values of '{{y_axis_label}}' at {{x_tick_1}} to that at {{x_tick_2}}?
+'59': Is the value of '{{y_axis_label}}' at {{x_tick_1}} less than that at {{x_tick_2}}?
+'59a': Which major ticks on the independent axis have the value of '{{y_axis_label}}' less than that at {{x_tick}}?
+'59b': Which major ticks on the independent axis have the value of '{{y_axis_label}}' less than that at {{x_tick}}, arranged in increasing order of difference between their '{{y_axis_label}}' values?
+'6': How many '{{x_axis_label}}' are there in the chart?
+'60': For how many '{{x_axis_label}}' is the value of '{{y_axis_label}}' for '{{series_label}}' greater than {{value}}?
+'60a': For how many major ticks on the independent axis is the value of '{{y_axis_label}}' for '{{series_label}}' greater than {{value}}?
+'60b': What '{{x_axis_label}}' have the value of '{{y_axis_label}}' for '{{series_label}}' greater than {{value}}?
+'60c': For what major ticks on the independent axis is the value of '{{y_axis_label}}' for '{{series_label}}' greater than {{value}}?
+'60d': What '{{x_axis_label}}' have the value of '{{y_axis_label}}' for '{{series_label}}' greater than {{value}}, arranged in increasing order of difference between the value of '{{y_axis_label}}' and {{value}}?
+'60e': What major ticks on the independent axis have the value of '{{y_axis_label}}' for '{{series_label}}' greater than {{value}}, arranged in increasing order of difference between the value of '{{y_axis_label}}' and {{value}}?
+'61': What is the ratio of the values of '{{y_axis_label}}' for '{{series_label}}' at {{x_tick_1}} to that at {{x_tick_2}}?
+'62': Is the value of '{{y_axis_label}}' for '{{series_label}}' at {{x_tick_1}} less than that at {{x_tick_2}}?
+'62a': Which major ticks on the independent axis have the value of '{{y_axis_label}}' for '{{series_label}}' less than that at {{x_tick}}?
+'62b': Which major ticks on the independent axis have the value of '{{y_axis_label}}' for '{{series_label}}' less than that at {{x_tick}}, arranged in the increasing order of difference between their '{{y_axis_label}}' values?
+'63': Is the difference between the value of '{{y_axis_label}}' at {{x_tick_1}} and {{x_tick_2}} greater than the difference between any two '{{x_axis_label}}'?
+'63a': Is the difference between the value of '{{y_axis_label}}' at {{x_tick_1}} and {{x_tick_2}} greater than the difference between any two major ticks on the independent axis?
+'63b': Which pairs of major ticks on the independent axis have a greater difference than {{x_tick_1}} and {{x_tick_2}} for the value of '{{y_axis_label}}'?
+'63c': Which pairs of major ticks on the independent axis have a greater difference than {{x_tick_1}} and {{x_tick_2}} for the value of '{{y_axis_label}}', arranged in increasing order of difference?
+'64': What is the difference between the maximum and the second maximum value of '{{y_axis_label}}'?
+'65': Is the sum of the value of '{{y_axis_label}}' at {{x_tick_1}} and {{x_tick_2}} greater than the maximum value of '{{y_axis_label}}' across all '{{x_axis_label}}'?
+'65a': Is the sum of the value of '{{y_axis_label}}' at {{x_tick_1}} and {{x_tick_2}} greater than the maximum value of '{{y_axis_label}}' across all major ticks on the independent axis?
+'65b': For what pair of consecutive major ticks on the independent axis is the sum of '{{y_axis_label}}' greater than the maximum value of '{{y_axis_label}}' across all '{{x_axis_label}}'?
+'65c': For what pair of consecutive major ticks on the independent axis is the sum of '{{y_axis_label}}' greater than the maximum value of '{{y_axis_label}}' across all major ticks on the independent axis?
+'66': What is the difference between the maximum and minimum values of '{{y_axis_label}}'?
+'67': In how many '{{x_axis_label}}' is the value of '{{y_axis_label}}' greater than the average value of '{{y_axis_label}}' taken over all '{{x_axis_label}}'?
+'67a': For how many major ticks on the independent axis is the value of '{{y_axis_label}}' greater than the average value of '{{y_axis_label}}' taken over all major ticks on the independent axis?
+'68': Is the difference between the value of '{{y_axis_label}}' for '{{series_label_1}}' at {{x_tick_1}} and {{x_tick_2}} greater than the difference between the value of '{{y_axis_label}}' for '{{series_label_2}}' at {{x_tick_1}} and {{x_tick_2}}?
+'68a': Which pairs of major ticks on the independent axis for '{{series_label_1}}' have a greater difference than at {{x_tick_1}} and {{x_tick_2}} for '{{series_label_2}}' for the value of '{{y_axis_label}}'?
+'69': What is the difference between the maximum and second maximum values of '{{y_axis_label}}' for '{{series_label}}'?
+6a: How many major ticks are there on the independent axis of the chart?
+6b: List all the major ticks on independent axis from left?
+6c: List all the major ticks on independent axis from right?
+6d: List all the major ticks on independent axis from top?
+6e: List all the major ticks on independent axis from bottom?
+'7': How many lines are visually present?
+'70': What is the difference between the maximum and minimum values of '{{y_axis_label}}' for '{{series_label}}'?
+'71': In how many '{{x_axis_label}}' is the value of '{{y_axis_label}}' for '{{series_label}}' greater than the average value of '{{y_axis_label}}' for '{{series_label}}' taken over all '{{x_axis_label}}'?
+'71a': For how many major ticks on the independent axis is the value of '{{y_axis_label}}' for '{{series_label}}' greater than the average value of '{{y_axis_label}}' for '{{series_label}}' taken over all major ticks?
+'71b': What '{{x_axis_label}}' have the value of '{{y_axis_label}}' for '{{series_label}}' greater than the average value of '{{y_axis_label}}' for '{{series_label}}' taken over all '{{x_axis_label}}'?
+'71c': What major ticks on the independent axis have the value of '{{y_axis_label}}' for '{{series_label}}' greater than the average value of '{{y_axis_label}}' for '{{series_label}}' taken over all major ticks?
+'71d': What '{{x_axis_label}}' have the value of '{{y_axis_label}}' for '{{series_label}}' greater than the average value of '{{y_axis_label}}' for '{{series_label}}' taken over all '{{x_axis_label}}', arranged in increasing order of difference between the value and the average value?
+'72': Is it the case that for every '{{x_axis_label}}', the sum of '{{y_axis_label}}' for '{{series_label_1}}' and '{{series_label_2}}' is greater than the value of '{{y_axis_label}}' for '{{series_label_3}}'?
+'73': Is the sum of the values of '{{y_axis_label}}' for '{{series_label_1}}' at {{x_tick_1}} and {{x_tick_2}} greater than the maximum value of '{{y_axis_label}}' for '{{series_label_2}}' across all '{{x_axis_label}}'?
+'73a': Is the sum of the values of '{{y_axis_label}}' for '{{series_label}}' at {{x_tick_1}} and {{x_tick_2}} greater than the maximum value of '{{y_axis_label}}' for '{{series_label}}' across all major ticks on the independent axis?
+'73b': For what pair of major ticks on the independent axis is the sum of the values of '{{y_axis_label}}' for '{{series_label_1}}' greater than the maximum value of '{{y_axis_label}}' for '{{series_label_2}}' across all '{{x_axis_label}}'?
+'73c': For what pair of major ticks on the independent axis is the sum of the values of '{{y_axis_label}}' for '{{series_label_1}}' greater than the maximum value of '{{y_axis_label}}' for '{{series_label_2}}' across all major ticks on the independent axis?
+'74': Are the bars grouped?
+'75': Are the bars stacked?
+'76': What is the maximum number of components stacked in every bar?
+'77': What is the minimum number of components stacked in every bar?
+'78': How many lines are there in the chart?
+'79': Is independent axis categorical or numerical?
+7a: What is the type of chart?
+7b: How many bars are there?
+'80': What is the maximum value on independent axis?
+'81': What is the starting value on independent axis?
+'82': What is the orientation of the text of independent axis title?
+'84': What is the maximum value on dependent axis?
+'85': Is dependent axis on a logarithmic scale or Linear scale?
+'86': What is the starting value on dependent axis?
+'87': What is the orientation of text of dependent axis title?
+'89': Is there a legend title?
+'9': How many groups of bars are there?
+'90': What is the title of legend?
+'91': Other than the graph objects, is there any other text present on the graph plot
+  area?
+91a: Other than the graph objects, what other text are present on the graph plot area?
+'92': Which '{{x_axis_label}}' has the maximum difference between '{{series_label_1}}' and '{{series_label_2}}'?
+'93': What value of major tick on independent axis has the maximum difference between '{{series1}}' and '{{series2}}'?
+'94': Which data series has the highest mean?
+'95': Which data series has the lowest mean?
+'96': Which data series has the highest median?
+'97': Which data series has the lowest median?
+'98': Which data series has the highest mode?
+'99': Which data series has the lowest mode?
