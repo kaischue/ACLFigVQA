@@ -2,17 +2,14 @@ import csv
 import json
 import os.path
 from dataclasses import dataclass
-from pprint import pprint
 
 import google.generativeai as genai
-import matplotlib.pyplot as plt
 import pandas
-import typing_extensions as typing
 
 from constants import GEMINI_API_KEY
-import PIL.Image
 from load_dataset_disc import get_dataset_split_generator
-from utils import load_yaml_to_dict, shuffle_lists_in_dict
+from utils import load_yaml_to_dict, shuffle_lists_in_dict, find_first_mention_of_figure, remove_single_line_breaks, \
+    create_image_question_screenshot
 
 GEMINI_MODEL = "gemini-1.5-pro-latest"
 # GEMINI_MODEL = "gemini-1.5-flash-latest"
@@ -37,20 +34,25 @@ class GeminiModel:
         with open(prompt_file, "r") as f:
             self.prompt = f.read()
 
-    def generate_qa(self, sample: dict, shuffle=False):
+    def generate_qa(self, sample: dict, shuffle=False, figure_mention_range=5000):
         img = sample['image']  # PILPng
         label = sample['label']
         caption = sample['caption']
         inline_reference = sample['inline_reference']
         metadata = sample['metadata']
         acl_paper_id = sample['acl_paper_id']
-        pdf_text = sample['pdf_text']
+        pdf_text = remove_single_line_breaks(sample['pdf_text'])
+
+        first_mention_idx = find_first_mention_of_figure(pdf_text, caption)
 
         metadata_string = f'Here is some additional info for the image:' \
                           f'The label of the image is: {label}.' \
                           f'The caption of the image is: {caption}.' \
                           f'The inline reference of the image is: {inline_reference}.' \
-                          f'And the research paper as text where the image was sourced form is: {pdf_text[:10000]}'
+                          f'And the relevant section from the research paper that includes the figure caption. ' \
+                          f'This section starts from {figure_mention_range} characters before and after the first ' \
+                          f'mention of the figure caption:\n' \
+                          f'{pdf_text[max([0, first_mention_idx - figure_mention_range]):min([first_mention_idx + figure_mention_range, len(pdf_text)])]}'
 
         if shuffle:
             shuffle_lists_in_dict(self.vqa_templates)
@@ -98,6 +100,10 @@ if __name__ == '__main__':
             if ds_sample["label"] not in VISUAL_LABELS:
                 continue
             if not df_qa_gen_train.loc[df_qa_gen_train['img_file_name'] == ds_sample["img_file_name"]].empty:
+                rows = df_qa_gen_train.loc[df_qa_gen_train['img_file_name'] == ds_sample["img_file_name"]]
+                questions = rows.question_english
+                answers = rows.answer_english
+                create_image_question_screenshot(f"Data\\VQAMeta\\training_data\\train\\{ds_sample['label']}\\{ds_sample['img_file_name']}", questions.values, answers.values)
                 continue
             # plt.imshow(ds_sample["image"])
             # plt.show()

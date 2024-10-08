@@ -4,11 +4,10 @@ You should only be able to answer it if you look at the image, not just with ext
 Also, please provide the question in English and German. And then answer the question.
 Chose question templates as a base from the templates I provided to you. Not all templates fit all images.
 There should a question each from these categories: "Simple_Retrieval", "Simple_Calculation_1-Step", "Complex_Calculation_Multi-Step" and "Logical_Reasoning".
-That means there have to be 4 questions total. Choose question templates that fits and fill in the variables. You can adjust the templates a bit, so it fits the image if necessary.
+Choose question templates that fits and fill in the variables. You can adjust the templates a bit, so it fits the image if necessary.
 There could be cases possible where no templates fit for the image, in this case you should create a question of your own.
 But still make sure the question still mentions at least on visual attribute and has at least medium complexity.
-Additionally, you also got the frist 10000 characters of research paper available as text from where the image was sourced from.
-One additional question should require additional context from the paper to be answered, but it should still be a visual question.
+One additional question should require additional context from the paper, caption or inline reference, to be answered, but it should still be a visual question.
 You don't have to follow a template for this advanced question.
 In total that makes 5 questions: one each from the question template categories "Simple_Retrieval", "Simple_Calculation_1-Step", "Complex_Calculation_Multi-Step" and "Logical_Reasoning".
 And one question which requires additional context from the paper, which is not based on a template but still a visual question if possible.
