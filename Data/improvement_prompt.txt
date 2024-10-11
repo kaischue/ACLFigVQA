@@ -1,0 +1,44 @@
+Prompt for Improving Questions Based on Feedback
+
+Based on the provided feedback, refine and improve the generated questions to ensure they meet the following criteria:
+
+1. **Visual Attributes**: Ensure all questions genuinely require examination of the visual attributes of the image, such as color, position, or orientation.
+2. **Category Coverage**: Verify that there are five questions, each from the specified categories: "Simple_Retrieval," "Simple_Calculation_1-Step," "Complex_Calculation_Multi-Step," "Logical_Reasoning," and one that requires additional context from the paper.
+3. **Relevance and Fit**: Adjust the questions to fit the provided figure more appropriately and ensure they are relevant to the visual elements present.
+4. **Clarity and Unambiguity**: Refine the questions to be clear and unambiguous, ensuring each question can be answered in one way without multiple possible interpretations.
+5. **Complexity Appropriateness**: Ensure the complexity level of each question is appropriate—simple for one-step calculations, more complex for multi-step calculations, and suitable for logical reasoning tasks.
+6. **Engagement**: Make the questions more engaging and thought-provoking to encourage deeper interaction with the figure.
+7. **Context Integration**: Enhance the questions to effectively integrate context from the figure or the accompanying text.
+8. **Language Precision**: Improve the clarity, grammar, and phrasing of the questions. Ensure they are clearly worded and free of errors.
+9. **Variety**: Ensure a variety of question types and difficulty levels are present to cater to different analytical skills.
+10. **Creativity**: Enhance the originality and creativity of the questions. Aim to bring a unique perspective or challenge.
+
+For questions requiring additional context:
+
+1. **Contextual Necessity**: Refine the question to better integrate additional context from the paper, caption, or inline reference.
+2. **Dependency**: Ensure that the question cannot be answered without referencing the additional context provided.
+3. **Complexity**: Adjust the question to increase the complexity and depth added by the additional context.
+
+Additionally, improve the answers based on the following feedback criteria:
+
+1. **Accuracy**: Ensure that the answers are correct and match the information present in the figure.
+2. **Clarity**: Refine the answers to be clearly stated and easy to understand.
+3. **Completeness**: Confirm that the answers provide all necessary information required by the questions.
+4. **Conciseness**: Ensure that the answers are concise and to the point, without unnecessary elaboration.
+
+Final Submission:
+
+Please provide both the improved questions and answers in English and German.
+Please use this JSON schema:
+
+QAPair = {"question_german": str, "question_english": str, "answer_english": str, "answer_german": str}
+Return: [QAPair1, QAPair2, ...]
+
+Here is an example of how the output looks like, it starts and ends with a square bracket:
+"[
+    {"question_german": "german question 1", "question_english": "english question 1", "answer_english": "english answer 1", "answer_german": "german answer 1"},
+    {"question_german": "german question 2", "question_english": "english question 2", "answer_english": "english answer 2", "answer_german": "german answer 2"}
+]"
+
+ONLY reply with the JSON, nothing else! No additional text, just the JSON! Ensure the response is a valid JSON object!
+The JSON string must be parsable directly form your response with no adjustment required. This is extremely important.

@@ -1,18 +1,25 @@
-Create a question about this figure
-It should be a visual question, meaning mention at least on visual attribute like color, position or orientation of the different plot elements.
-You should only be able to answer it if you look at the image, not just with extracted data as a table.
-Also, please provide the question in English and German. And then answer the question.
-Chose question templates as a base from the templates I provided to you. Not all templates fit all images.
-There should a question each from these categories: "Simple_Retrieval", "Simple_Calculation_1-Step", "Complex_Calculation_Multi-Step" and "Logical_Reasoning".
-Choose question templates that fits and fill in the variables. You can adjust the templates a bit, so it fits the image if necessary.
-There could be cases possible where no templates fit for the image, in this case you should create a question of your own.
-But still make sure the question still mentions at least on visual attribute and has at least medium complexity.
-One additional question should require additional context from the paper, caption or inline reference, to be answered, but it should still be a visual question.
-You don't have to follow a template for this advanced question.
-In total that makes 5 questions: one each from the question template categories "Simple_Retrieval", "Simple_Calculation_1-Step", "Complex_Calculation_Multi-Step" and "Logical_Reasoning".
-And one question which requires additional context from the paper, which is not based on a template but still a visual question if possible.
-Just reply with the questions in english and german. And the answers in english and german.
+Create a question about this figure.
+The question should be a visual question, mentioning at least one visual attribute like color, position, or orientation of the different plot elements.
+It should only be answerable by examining the visual attributes of the image, not merely by converting it to a data table. This ensures that the question relies on visual details and can't be answered without the image.
+Please provide the question in both English and German. Then, answer the question in both languages.
+Using the provided question templates as a base, create one question from each of the following categories:
+"Simple_Retrieval"
+"Simple_Calculation_1-Step"
+"Complex_Calculation_Multi-Step"
+"Logical_Reasoning"
 
+Choose the template that best fits the image and fill in the variables, adjusting the templates as needed to suit the image.
+If none of the templates fit the image, create a question of your own, ensuring it mentions at least one visual attribute and has at least medium complexity.
+Additionally, create one question that requires additional context from the paper, caption, or inline reference to be answered, but it should still be a visual question if possible. This question does not need to follow a template.
+
+In total, there should be 5 questions:
+One from "Simple_Retrieval"
+One from "Simple_Calculation_1-Step"
+One from "Complex_Calculation_Multi-Step"
+One from "Logical_Reasoning"
+One that requires additional context from the paper
+
+Please provide both the questions and answers in English and German.
 Please use this JSON schema:
 
 QAPair = {"question_german": str, "question_english": str, "answer_english": str, "answer_german": str}

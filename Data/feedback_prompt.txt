@@ -1,0 +1,59 @@
+You will get the image, the templates and the generated question answer pairs as well as the metadata string and the relevant section of the paper.
+Evaluate the following criteria for the generated questions:
+
+1. **Visual Attributes**: Determine if the questions are genuinely visual questions, requiring examination of the visual attributes of the image, such as color, position, or orientation.
+2. **Category Coverage**: Confirm that there are five questions, each from the specified categories: "Simple_Retrieval," "Simple_Calculation_1-Step," "Complex_Calculation_Multi-Step," "Logical_Reasoning," and one that requires additional context from the paper.
+3. **Relevance and Fit**: Assess whether the questions fit the provided figure appropriately and are relevant to the visual elements present.
+4. **Clarity and Unambiguity**: Evaluate whether the questions can be answered clearly in one way, avoiding ambiguous questions with multiple possible answers.
+5. **Complexity Appropriateness**: Ensure that the questions maintain the intended complexity level—simple, one-step calculations, multi-step calculations, logical reasoning, etc.
+6. **Language Precision**: Check for clarity, grammar, and phrasing. Are the questions clearly worded and free of errors?
+7. **Variety**: Ensure there is a variety of question types and difficulty levels to cater to different analytical skills.
+
+For questions requiring additional context:
+
+1. **Contextual Necessity**: Evaluate how well the question integrates additional context from the paper, caption, or inline reference.
+2. **Dependency**: Confirm that the question can’t be answered without referencing the additional context provided.
+3. **Complexity**: Ensure that the added context increases the complexity and depth of the question.
+4. **Creativity**: Assess the originality and creativity of the questions. Do they bring a unique perspective or challenge?
+
+Additionally, provide feedback on the answers based on the following criteria:
+
+1. **Accuracy**: Verify that the provided answers are correct and match the information present in the figure.
+2. **Clarity**: Ensure the answers are clearly stated and easy to understand.
+3. **Completeness**: Confirm that the answers provide all necessary information required by the questions.
+4. **Conciseness**: Check that the answers are concise and to the point, without unnecessary elaboration.
+5. **Confidence Level**: Indicate how confident you are in the correctness of the answers provided, compare to your own answers.
+
+**Grading Scheme for Questions:**
+
+| Criterion                  | Excellent (3)      | Good (2)           | Needs Improvement (1) | Poor (0)            |
+|----------------------------|--------------------|--------------------|-----------------------|---------------------|
+| Visual Attributes          | Clearly visual     | Mostly visual      | Partially visual      | Not visual          |
+| Category Coverage          | All categories     | Most categories    | Some categories       | Few/None categories |
+| Relevance and Fit          | Very relevant      | Mostly relevant    | Somewhat relevant     | Not relevant        |
+| Clarity and Unambiguity    | Clear, one answer  | Clear, minor ambiguity | Some ambiguity    | Very ambiguous      |
+| Complexity Appropriateness | Perfectly fits     | Mostly fits        | Some fit issues       | Does not fit        |
+| Language Precision         | Very precise       | Good precision     | Some errors           | Many errors         |
+| Variety                    | Great variety      | Good variety       | Some variety          | Little variety      |
+
+**Grading Scheme for Questions with Additional Context:**
+
+| Criterion           | Excellent (3)      | Good (2)           | Needs Improvement (1) | Poor (0)            |
+|---------------------|--------------------|--------------------|-----------------------|---------------------|
+| Contextual Necessity| Very necessary     | Mostly necessary   | Somewhat necessary    | Not necessary       |
+| Dependency          | Strong dependency  | Moderate dependency| Some dependency       | No dependency       |
+| Complexity          | Adds high complexity | Adds some complexity | Adds little complexity | Adds no complexity  |
+| Creativity          | Very creative      | Some creativity    | Little creativity     | Not creative        |
+
+**Grading Scheme for Answers:**
+
+| Criterion       | Excellent (3)      | Good (2)           | Needs Improvement (1) | Poor (0)            |
+|-----------------|--------------------|--------------------|-----------------------|---------------------|
+| Accuracy        | Completely correct | Mostly correct     | Somewhat correct      | Incorrect           |
+| Clarity         | Very clear         | Mostly clear       | Somewhat clear        | Unclear             |
+| Completeness    | Fully complete     | Mostly complete    | Somewhat complete     | Incomplete          |
+| Conciseness     | Very concise       | Mostly concise     | Somewhat concise      | Not concise         |
+| Confidence Level| Very confident     | Mostly confident   | Somewhat confident    | Not confident       |
+
+**Final Evaluation**: For each question and answer pair, provide the grading and an explanation based on the above criteria.
+Clearly state the strengths and areas for improvement for each pair.

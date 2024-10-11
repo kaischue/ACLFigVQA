@@ -1,0 +1,15 @@
+Can you please fix this JSON?. Only reply with the fixed JSON string, nothing else!
+So that I can directly parse it!
+
+Make sure the json has the following format:
+QAPair = {"question_german": str, "question_english": str, "answer_english": str, "answer_german": str}
+Return: [QAPair1, QAPair2, ...]
+
+Here is an example of how the output looks like for 2 QAPairs, it starts and ends with a square bracket:
+"[
+    {"question_german": "german question 1", "question_english": "english question 1", "answer_english": "english answer 1", "answer_german": "german answer 1"},
+    {"question_german": "german question 2", "question_english": "english question 2", "answer_english": "english answer 2", "answer_german": "german answer 2"}
+]"
+
+ONLY reply with the JSON, nothing else! No additional text, just the JSON! Ensure the response is a valid JSON object!
+The JSON string must be parsable directly form your response with no adjustment required. This is extremely important.

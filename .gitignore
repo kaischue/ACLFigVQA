@@ -1,3 +1,5 @@
 constants.py
 .idea
 /Data/VQAMeta/
+/Data/qa_gen
+/Data/sample_qa
