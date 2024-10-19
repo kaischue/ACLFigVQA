@@ -5,9 +5,36 @@ Evaluate the following criteria for the generated questions:
 2. **Category Coverage**: Confirm that there are five questions, each from the specified categories: "Simple_Retrieval," "Simple_Calculation_1-Step," "Complex_Calculation_Multi-Step," "Logical_Reasoning," and one that requires additional context from the paper.
 3. **Relevance and Fit**: Assess whether the questions fit the provided figure appropriately and are relevant to the visual elements present.
 4. **Clarity and Unambiguity**: Evaluate whether the questions can be answered clearly in one way, avoiding ambiguous questions with multiple possible answers.
-5. **Complexity Appropriateness**: Ensure that the questions maintain the intended complexity level—simple, one-step calculations, multi-step calculations, logical reasoning, etc.
-6. **Language Precision**: Check for clarity, grammar, and phrasing. Are the questions clearly worded and free of errors?
-7. **Variety**: Ensure there is a variety of question types and difficulty levels to cater to different analytical skills.
+5. **Answer-ability**: Ensure the question can be answered from the image and metadata. Also make sure the question can be answered accurately. Heavily criticize questions that cant be answered from the material.
+6. **Complexity Appropriateness**: Ensure that the questions maintain the intended complexity level—simple, one-step calculations, multi-step calculations, logical reasoning, etc.
+7. **Language Precision**: Check for clarity, grammar, and phrasing. Are the questions clearly worded and free of errors?
+8. **Variety**: Ensure there is a variety of question types and difficulty levels to cater to different analytical skills.
+
+Here are the definitions of the different categories:
+
+Simple Retrieval:
+Directly locating and extracting a single value or label from the chart based on its position or color. No calculations or comparisons are involved.
+Focus: Locating information based on visual cues.
+Example (Positional): "What is the Topmost bar?", "What is the Leftmost data point in the third group?"
+Example (Color): "What is the value of the green bar?" "Which legend item is represented by blue?"
+
+Simple Calculation (1-Step):
+Performing one arithmetic operation (addition, subtraction, multiplication, division, ratio, or a simple comparison like "greater than") on one or two data points identified by their position or color.
+Focus: A single, direct calculation.
+Example (Positional): "What is the difference between the first and last bar?" "What is the ratio of the two leftmost bars?"
+Example (Color): "What is the sum of values of the blue and red bars?" "Is the green bar larger than the orange bar?"
+
+Complex Calculation (Multi-Step):
+Performing multiple arithmetic operations or more involved calculations (like average, median, sum of a range) on data points identified by position or color. The logic is usually straightforward – it's about the calculations themselves.
+Focus: Performing a series of calculations.
+Example (Positional): "What is the average of all bars except the first and last?" "What is the sum of the top three values?"
+Example (Color): "What is the average value of all blue bars?" "What is the sum of the squares of the red bar values?"
+
+Logical Reasoning (Positional/Color):
+Definition: Questions that require determining which calculations to perform or involve more intricate comparisons, decisions, or inferences. The calculations might be simple, but the emphasis is on problem-solving and strategy. It often involves finding relationships between data points.
+Focus: Deciding what steps to take, making comparisons, or drawing conclusions.
+Example (Positional): "Which two bars have a combined value 10?", "Which section of the chart has the greatest increase in value?"
+Example (Color): "Is the blue bars' sum greater than the green bars' average?", "Which color represents the smallest overall contribution?"
 
 For questions requiring additional context:
 
@@ -26,15 +53,16 @@ Additionally, provide feedback on the answers based on the following criteria:
 
 **Grading Scheme for Questions:**
 
-| Criterion                  | Excellent (3)      | Good (2)           | Needs Improvement (1) | Poor (0)            |
-|----------------------------|--------------------|--------------------|-----------------------|---------------------|
-| Visual Attributes          | Clearly visual     | Mostly visual      | Partially visual      | Not visual          |
-| Category Coverage          | All categories     | Most categories    | Some categories       | Few/None categories |
-| Relevance and Fit          | Very relevant      | Mostly relevant    | Somewhat relevant     | Not relevant        |
-| Clarity and Unambiguity    | Clear, one answer  | Clear, minor ambiguity | Some ambiguity    | Very ambiguous      |
-| Complexity Appropriateness | Perfectly fits     | Mostly fits        | Some fit issues       | Does not fit        |
-| Language Precision         | Very precise       | Good precision     | Some errors           | Many errors         |
-| Variety                    | Great variety      | Good variety       | Some variety          | Little variety      |
+| Criterion                  | Excellent (3)          | Good (2)           | Needs Improvement (1) | Poor (0)            |
+|----------------------------|------------------------|--------------------|-----------------------|---------------------|
+| Visual Attributes          | Clearly visual         | Mostly visual      | Partially visual      | Not visual          |
+| Category Coverage          | All categories         | Most categories    | Some categories       | Few/None categories |
+| Relevance and Fit          | Very relevant          | Mostly relevant    | Somewhat relevant     | Not relevant        |
+| Clarity and Unambiguity    | Clear, one answer      | Clear, minor ambiguity | Some ambiguity    | Very ambiguous      |
+| Accurately answerable      | Negligible imprecision | Minor imprecision  |Medium/High imprecision| Not answerable      |
+| Complexity Appropriateness | Perfectly fits         | Mostly fits        | Some fit issues       | Does not fit        |
+| Language Precision         | Very precise           | Good precision     | Some errors           | Many errors         |
+| Variety                    | Great variety          | Good variety       | Some variety          | Little variety      |
 
 **Grading Scheme for Questions with Additional Context:**
 

@@ -1,5 +1,5 @@
 Create a question about this figure.
-The question should be a visual question, mentioning at least one visual attribute like color, position, or orientation of the different plot elements.
+The question should be a visual question, mentioning at least one visual attribute like size, height, position, colour, shape, direction of the different plot elements.
 It should only be answerable by examining the visual attributes of the image, not merely by converting it to a data table. This ensures that the question relies on visual details and can't be answered without the image.
 Please provide the question in both English and German. Then, answer the question in both languages.
 Using the provided question templates as a base, create one question from each of the following categories:
@@ -8,8 +8,34 @@ Using the provided question templates as a base, create one question from each o
 "Complex_Calculation_Multi-Step"
 "Logical_Reasoning"
 
+Here are the definitions of the different categories:
+
+Simple Retrieval:
+Directly locating and extracting a single value or label from the chart based on its position or color. No calculations or comparisons are involved.
+Focus: Locating information based on visual cues.
+Example (Positional): "What is the Topmost bar?", "What is the Leftmost data point in the third group?"
+Example (Color): "What is the value of the green bar?" "Which legend item is represented by blue?"
+
+Simple Calculation (1-Step):
+Performing one arithmetic operation (addition, subtraction, multiplication, division, ratio, or a simple comparison like "greater than") on one or two data points identified by their position or color.
+Focus: A single, direct calculation.
+Example (Positional): "What is the difference between the first and last bar?" "What is the ratio of the two leftmost bars?"
+Example (Color): "What is the sum of values of the blue and red bars?" "Is the green bar larger than the orange bar?"
+
+Complex Calculation (Multi-Step):
+Performing multiple arithmetic operations or more involved calculations (like average, median, sum of a range) on data points identified by position or color. The logic is usually straightforward – it's about the calculations themselves.
+Focus: Performing a series of calculations.
+Example (Positional): "What is the average of all bars except the first and last?" "What is the sum of the top three values?"
+Example (Color): "What is the average value of all blue bars?" "What is the sum of the squares of the red bar values?"
+
+Logical Reasoning (Positional/Color):
+Definition: Questions that require determining which calculations to perform or involve more intricate comparisons, decisions, or inferences. The calculations might be simple, but the emphasis is on problem-solving and strategy. It often involves finding relationships between data points.
+Focus: Deciding what steps to take, making comparisons, or drawing conclusions.
+Example (Positional): "Which two bars have a combined value 10?", "Which section of the chart has the greatest increase in value?"
+Example (Color): "Is the blue bars' sum greater than the green bars' average?", "Which color represents the smallest overall contribution?"
+
 Choose the template that best fits the image and fill in the variables, adjusting the templates as needed to suit the image.
-If none of the templates fit the image, create a question of your own, ensuring it mentions at least one visual attribute and has at least medium complexity.
+If none of the templates fit the image, create a question of your own, ensuring it mentions at least one visual attribute and fits one of the four categories.
 Additionally, create one question that requires additional context from the paper, caption, or inline reference to be answered, but it should still be a visual question if possible. This question does not need to follow a template.
 
 In total, there should be 5 questions:
