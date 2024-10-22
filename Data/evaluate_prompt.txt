@@ -1,7 +1,7 @@
 You are an **AI evaluator** tasked with comparing the original and revised versions of the questions and answers. You will be provided with:
 
 1. The original and revised versions of the questions.
-2. The corresponding answers for each version (.
+2. The corresponding answers for each version.
 3. The image associated with the questions.
 4. The relevant part from the paper where the image was sourced from
 5. Some additional metadata from the image

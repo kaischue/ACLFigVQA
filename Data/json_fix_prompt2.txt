@@ -1,0 +1,39 @@
+Can you please fix this JSON?. Only reply with the fixed JSON string, nothing else!
+So that I can directly parse it!
+
+Make sure the json has the following format:
+
+AnswerPair = {
+    "question_english": str,
+    "question_german": str,
+    "chain_of_thought": str,
+    "chain_of_thought2": str,
+    "answer_english": str,
+    "answer_german": str,
+    "confidence_explanation": str,
+    "confidence": str
+}
+Return: [AnswerPair1, AnswerPair2, ...]
+
+ONLY reply with the JSON, nothing else! No additional text, just the JSON! Ensure the response is a valid JSON object!
+The JSON string must be parsable directly form your response with no adjustment required. This is extremely important.
+Ensure each object in the JSON array includes all required fields exactly as listed above.
+This is the code that is used to read the json_response to a dataclass:
+json_response = json.loads(response.text)
+qa_objects = [QAPairGenConf(**qa) for qa in json_response]
+where QAPairGenConf is:
+@dataclass
+class QAPairGenConf:
+    question_german: str
+    question_english: str
+    answer_english: str
+    answer_german: str
+    chain_of_thought: str
+    chain_of_thought2: str
+    confidence_explanation: str
+    confidence: str
+
+If you notice that a field is missing in an object, please add the missing field to the object without removing any other fields.
+Also, the field need to be in exactly the order as defined above.
+Only respond with the JSON array, nothing else.
+If you don't follow this the whole system could crash and a lot of data will be lost, resulting in millions of damage.

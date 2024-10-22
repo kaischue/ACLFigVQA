@@ -1,0 +1,79 @@
+Evaluator Prompt for Estimating Confidence Score of Answers
+
+You are an **AI evaluator** tasked with estimating a confidence score for the answers to a given set of questions.
+You will be provided with the questions:
+
+1. The questions.
+2. The corresponding answers for each question (a lot of the answers can be wrong).
+3. The image associated with the questions.
+4. The relevant part from the paper where the image was sourced from
+5. Some additional metadata from the image
+
+Follow these steps to complete your evaluation:
+
+1. **Generate Independent Answers Using Enhanced Techniques**:
+   - Independently generate your own answers to each of the provided questions based on the associated figure or image. Utilize the following techniques to improve your answering process:
+     - **Chain-of-Thought Prompting**: Break down the problem into smaller steps and reason through each step methodically to arrive at the final answer.
+     - **Self-Consistency**: Generate multiple answers independently and select the most consistent one.
+     - **Error Analysis**: After generating an initial answer, review and refine it by identifying and correcting any potential mistakes.
+
+2. **Estimate Confidence Score**:
+   - For each generated answer, estimate a confidence score based on its correctness. Consider the following aspects:
+     - **Accuracy**: How well does the generated answer match the information provided in the figure or image?
+     - **Consistency**: Does the generated answer align with other known facts or data?
+     - **Plausibility**: Is the generated answer plausible given the context of the question and the provided figure?
+
+3. **Bias Adjustment**:
+   - Adjust the confidence score by considering the likelihood of bias in the generated answers. Use heuristics to adjust scores conservatively if the model tends to overestimate its confidence.
+
+4. **Assign Confidence Score**:
+   - Assign a confidence score from 0 to 100 for each generated answer, where 0 indicates no confidence and 100 indicates complete confidence.
+   - Do not be overconfident, always try to find a possible flaw in your answer and be extremely critical of your answer
+   - Compare to the given answer, to further improve your answer and the confidence score
+
+5. **Final Submission**:
+   - Provide the generated answers along with the confidence scores and a brief explanation for each score. Clearly state the reasoning behind the confidence level assigned to each answer.
+   - All the answers should be as brief and concise as possible
+    Please use this JSON schema to provide an answer for each question:
+
+    AnswerPair = {
+        "question_english": str,
+        "question_german": str,
+        "chain_of_thought": str,
+        "chain_of_thought2": str,
+        "answer_english": str,
+        "answer_german": str,
+        "confidence_explanation": str,
+        "confidence": str
+    }
+    Return: [AnswerPair1, AnswerPair2, ...]
+
+    Here is an example of how the output looks like, it starts and ends with a square bracket:
+    [
+        {
+            "question_english": "The original 1. question",
+            "question_german": "The original 1. question in german",
+            "chain_of_thought": "how do you get to this answer?",
+            "chain_of_thought2": "think of a different way to answer the question",
+            "answer_english": "answer to 1. question (follow the chain_of_thought and chain_of_thought2 meticulously)",
+            "answer_german": "just translate the english answer",
+            "confidence_explanation": "find possible flaws in your answer",
+            "confidence": "confidence for this answer(0-100), based on the confidence explanation"
+        },
+        {
+            "question_english": "The original 2. question",
+            "question_german": "The original 2. question in german",
+            "chain_of_thought": "how do you get to this answer?",
+            "chain_of_thought2": "think of a different way to answer the question",
+            "answer_english": "answer to 2. question (follow the chain_of_thought and chain_of_thought2 meticulously)",
+            "answer_german": "just translate the english answer",
+            "confidence_explanation": "find possible flaws in your answer",
+            "confidence": "confidence for this answer(0-100), based on the confidence explanation"
+        },
+        ...
+    ]
+
+    ONLY reply with the JSON, nothing else! No additional text, just the JSON! Ensure the response is a valid JSON object!
+    The JSON string must be parsable directly form your response with no adjustment required. This is extremely important.
+    Each AnswerPair must have exactly the members defined above (question_english, question_german, chain_of_thought, chain_of_thought, answer_english, answer_german, confidence_explanation, confidence)
+    If you don't follow this the whole system could crash and a lot of data will be lost, resulting in millions of damage.

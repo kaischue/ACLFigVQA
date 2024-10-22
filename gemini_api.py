@@ -1,7 +1,8 @@
 import csv
 import json
+import json_repair
 import os.path
-from dataclasses import dataclass
+from dataclasses import dataclass, fields
 from pathlib import Path
 
 import google.generativeai as genai
@@ -21,11 +22,14 @@ TEMPLATE_FILE = "Data\\vqa_templates_merged.yaml"
 QA_GEN_CSV_FILE_REV1 = "Data\\qa_gen\\rev1\\qa_gen.csv"
 QA_GEN_CSV_FILE_REV2 = "Data\\qa_gen\\rev2\\qa_gen.csv"
 QA_GEN_CSV_FILE_REV3 = "Data\\qa_gen\\rev3\\qa_gen.csv"
+QA_GEN_CSV_FILE_REV4 = "Data\\qa_gen\\rev4\\qa_gen.csv"
 PROMPT_FILE = "Data\\vqa_gemini_prompt.txt"
 FEEDBACK_FILE = "Data\\feedback_prompt.txt"
 IMPROVEMENT_FILE = "Data\\improvement_prompt.txt"
 JSON_FIX_PROMPT = "Data\\json_fix_prompt.txt"
+JSON_FIX_PROMPT2 = "Data\\json_fix_prompt2.txt"
 EVALUATE_PROMPT = "Data\\evaluate_prompt.txt"
+ANSWER_CONFIDENCE_PROMPT = "Data\\confidence_prompt.txt"
 
 
 @dataclass
@@ -34,6 +38,18 @@ class QAPairGen:
     question_english: str
     answer_english: str
     answer_german: str
+
+
+@dataclass
+class QAPairGenConf:
+    question_german: str
+    question_english: str
+    answer_english: str
+    answer_german: str
+    chain_of_thought: str
+    chain_of_thought2: str
+    confidence_explanation: str
+    confidence: str
 
 
 class GeminiModel:
@@ -59,8 +75,14 @@ class GeminiModel:
         with open(JSON_FIX_PROMPT, "r") as f:
             self.json_fix_prompt = f.read()
 
+        with open(JSON_FIX_PROMPT2, "r") as f:
+            self.json_fix_prompt2 = f.read()
+
         with open(EVALUATE_PROMPT, "r") as f:
             self.evaluate_prompt = f.read()
+
+        with open(ANSWER_CONFIDENCE_PROMPT, "r") as f:
+            self.answer_confidence_prompt = f.read()
 
         self.figure_mention_range = figure_mention_range
 
@@ -112,6 +134,15 @@ class GeminiModel:
             [self.feedback_prompt, "Original questions and answers:\n" + qa_pairs,
              "QA-Templates:\n" + template_str_dict, img, metadata_string])
 
+    def generate_answer_confidence(self, sample: dict, questions: str):
+        img = sample['image']  # PILPng
+        metadata_string = self.get_metadata_str(sample)
+
+        template_str_dict = str(self.vqa_templates)
+
+        return self.model.generate_content(
+            [self.answer_confidence_prompt, "Original Questions and Answers:\n" + questions, img, metadata_string])
+
     def generate_qa_revised(self, sample: dict, qa_pairs: str, feedback: str):
         img = sample['image']  # PILPng
         metadata_string = self.get_metadata_str(sample)
@@ -136,7 +167,12 @@ class GeminiModel:
 
     def try_fix_json(self, broken_json, error_msg):
         return self.model.generate_content(
-            [self.json_fix_prompt, broken_json, error_msg])
+            [self.json_fix_prompt, str(broken_json), error_msg])
+
+    def try_fix_json2(self, broken_json, error_msg):
+        return self.model.generate_content(
+            [self.json_fix_prompt2, "Here is the json, i tried to parse: \n" + str(broken_json),
+             "This is the error message i got: \n" + error_msg])
 
 
 def write_row_to_csv(csv_path, row, mode='a'):
@@ -145,40 +181,25 @@ def write_row_to_csv(csv_path, row, mode='a'):
         writer.writerow(row)
 
 
-def fix_and_save_qa(gemini_response, gemini_model: GeminiModel, qa_gen_csv_file):
+def process_qa_objects(json_response, fix_json, dataclass_type, qa_gen_csv_file):
     try:
-        json_response = json.loads(gemini_response.text)
-    except json.JSONDecodeError as e:
-        print(e)
-        print("Invalid JSON, prompting for fix...")
-        e_msg = str(e)
-        invalid_json = e.doc
-        fix_response = gemini_model.try_fix_json(invalid_json, e_msg)
-        json_response = json.loads(fix_response.text)
-
-    print(gemini_response.usage_metadata)
-
-    try:
-        qa_objects = []
-        for qa in json_response:
-            qa_object = QAPairGen(**qa)
-            qa_objects.append(qa_object)
+        qa_objects = [dataclass_type(**qa) for qa in json_response]
     except Exception as e:
-        fix_response = gemini_model.try_fix_json(json_response, str(e))
-        json_response = json.loads(fix_response.text)
-    finally:
-        qa_objects = []
-        for qa in json_response:
-            qa_object = QAPairGen(**qa)
-            qa_objects.append(qa_object)
+        print(str(e))
+        print("Invalid JSON members, prompting for fix...")
+        fix_response = fix_json(json_response, str(e))
+        json_response = json_repair.loads(fix_response.text)
+        qa_objects = [dataclass_type(**qa) for qa in json_response]
 
     for qa_object in qa_objects:
-        write_row_to_csv(qa_gen_csv_file, [
-            ds_sample["img_file_name"],
-            qa_object.question_german,
-            qa_object.question_english,
-            qa_object.answer_german,
-            qa_object.answer_english])
+        attributes = [getattr(qa_object, field.name, None) for field in fields(qa_object)]
+        write_row_to_csv(qa_gen_csv_file, [ds_sample["img_file_name"]] + attributes)
+
+
+def fix_and_save_qa(gemini_response, fix_json, qa_gen_csv_file, dataclass_type):
+    json_response = json_repair.loads(gemini_response.text, logging=True)
+    print(gemini_response.usage_metadata)
+    process_qa_objects(json_response, fix_json, dataclass_type, qa_gen_csv_file)
 
 
 def get_rows_and_save_img_qa(sample, qa_gen_csv_file, out_path, regen_img=False):
@@ -218,6 +239,16 @@ if __name__ == '__main__':
         write_row_to_csv(QA_GEN_CSV_FILE_REV3,
                          ["img_file_name", "question_german", "question_english", "answer_german", "answer_english"],
                          mode='w')
+    if not os.path.isfile(QA_GEN_CSV_FILE_REV4):
+        write_row_to_csv(QA_GEN_CSV_FILE_REV4,
+                         [
+                             "img_file_name",
+                             "question_german", "question_english",
+                             "answer_german", "answer_english",
+                             "chain_of_thought", "chain_of_thought2",
+                             "confidence_explanation", "confidence"
+                         ],
+                         mode='w')
 
     df_qa_gen_train_rev1 = pandas.read_csv(QA_GEN_CSV_FILE_REV1)
 
@@ -230,7 +261,7 @@ if __name__ == '__main__':
             # generate qa
             if df_qa_gen_train_rev1.loc[df_qa_gen_train_rev1['img_file_name'] == ds_sample["img_file_name"]].empty:
                 response = model.generate_qa(ds_sample, shuffle=True)
-                fix_and_save_qa(response, model, QA_GEN_CSV_FILE_REV1)
+                fix_and_save_qa(response, model.try_fix_json, QA_GEN_CSV_FILE_REV1, QAPairGen)
 
             qa_pairs_str = get_rows_and_save_img_qa(ds_sample, QA_GEN_CSV_FILE_REV1, out_path="Data\\qa_gen\\rev1")
 
@@ -247,17 +278,26 @@ if __name__ == '__main__':
                 with open(feedback_file_f, 'r', encoding="utf-8") as file:
                     s_feedback = file.read()
                 response_improved = model.generate_qa_revised(ds_sample, qa_pairs_str, s_feedback)
-                fix_and_save_qa(response_improved, model, QA_GEN_CSV_FILE_REV2)
+                fix_and_save_qa(response_improved, model.try_fix_json, QA_GEN_CSV_FILE_REV2, QAPairGen)
 
-            qa_pairs_str_rev2 = get_rows_and_save_img_qa(ds_sample, QA_GEN_CSV_FILE_REV2, out_path="Data\\qa_gen\\rev2")
+            qa_pairs_str_rev2 = get_rows_and_save_img_qa(ds_sample, QA_GEN_CSV_FILE_REV2,
+                                                         out_path="Data\\qa_gen\\rev2")
 
             # generate qa evaluated
             df_qa_gen_train_rev3 = pandas.read_csv(QA_GEN_CSV_FILE_REV3)
             if df_qa_gen_train_rev3.loc[df_qa_gen_train_rev3['img_file_name'] == ds_sample["img_file_name"]].empty:
                 response_evaluated = model.evaluate_revised_original(ds_sample, qa_pairs_str, qa_pairs_str_rev2)
-                fix_and_save_qa(response_evaluated, model, QA_GEN_CSV_FILE_REV3)
+                fix_and_save_qa(response_evaluated, model.try_fix_json, QA_GEN_CSV_FILE_REV3, QAPairGen)
 
-            qa_pairs_str_rev3 = get_rows_and_save_img_qa(ds_sample, QA_GEN_CSV_FILE_REV3, out_path="Data\\qa_gen\\rev3")
+            qa_pairs_str_rev3 = get_rows_and_save_img_qa(ds_sample, QA_GEN_CSV_FILE_REV3,
+                                                         out_path="Data\\qa_gen\\rev3")
+
+            # generate answer confidence
+            df_qa_gen_train_rev4 = pandas.read_csv(QA_GEN_CSV_FILE_REV4)
+            if df_qa_gen_train_rev4.loc[df_qa_gen_train_rev4['img_file_name'] == ds_sample["img_file_name"]].empty:
+                response_confidence = model.generate_answer_confidence(ds_sample, qa_pairs_str_rev3)
+                fix_and_save_qa(response_confidence, model.try_fix_json2, QA_GEN_CSV_FILE_REV4, QAPairGenConf)
+            qa_pairs_str_rev4 = get_rows_and_save_img_qa(ds_sample, QA_GEN_CSV_FILE_REV4, out_path="Data\\qa_gen\\rev4")
 
             print("Done with img!")
 
