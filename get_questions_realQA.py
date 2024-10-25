@@ -1,8 +1,9 @@
-import os
 import json
+import os
+from concurrent.futures import ProcessPoolExecutor, as_completed
+
 import yaml
 from tqdm import tqdm
-from concurrent.futures import ProcessPoolExecutor, as_completed
 
 
 def process_file(file_path):

@@ -1,13 +1,12 @@
+# Login using e.g. `huggingface-cli login` to access this dataset
+from pathlib import Path
+
+import fitz
 import pandas as pd
 import requests
 from datasets import load_dataset, DatasetDict, Features, Image, Value, Dataset
-from tqdm import tqdm
-
-# Login using e.g. `huggingface-cli login` to access this dataset
-from constants import HUGGINGFACE_CACHE_PATH
-from pathlib import Path
-import fitz
 from pymupdf4llm import to_markdown
+from tqdm import tqdm
 
 metadata_df = pd.read_csv("Data\\scientific_figures_pilot.csv")
 papers_pdf_path = "Data\\VQAMeta\\papers\\pdfs"
@@ -85,7 +84,7 @@ def merge_metadata_with_dataset(dataset, metadata_df_):
 
 
 if __name__ == '__main__':
-    #ds = load_dataset("citeseerx/ACL-fig", cache_dir=HUGGINGFACE_CACHE_PATH)
+    # ds = load_dataset("citeseerx/ACL-fig", cache_dir=HUGGINGFACE_CACHE_PATH)
     ds = load_dataset("imagefolder", data_dir="Data/VQAMeta/training_data")
 
     features = Features({

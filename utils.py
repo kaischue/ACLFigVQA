@@ -20,7 +20,6 @@ def shuffle_lists_in_dict(yaml_dict):
 
 
 def create_image_question_screenshot(img_path, questions, answers, out_path):
-
     out_name = f"{out_path}\\{Path(img_path).stem}_qa.png"
     # Open your chart image
     chart = Image.open(img_path)

@@ -1,5 +1,4 @@
 from datasets import load_from_disk
-import matplotlib.pyplot as plt
 
 DATASET_PATH = 'Data\\VQAMeta'
 

@@ -1,11 +1,10 @@
 import csv
-import json
-import json_repair
 import os.path
 from dataclasses import dataclass, fields
 from pathlib import Path
 
 import google.generativeai as genai
+import json_repair
 import pandas
 
 from constants import GEMINI_API_KEY
@@ -85,6 +84,18 @@ class GeminiModel:
             self.answer_confidence_prompt = f.read()
 
         self.figure_mention_range = figure_mention_range
+
+    def translate_en_de(self, eng_text):
+        return self.model.generate_content(
+            ["Kannst du den text auf deutsch übersetzen?"
+             "Übersetze so genau wie möglich, aber übersetze keine Namen! "
+             "Antworte nur mit dem übersetzten text, sonst nichts!", eng_text])
+
+    def translate_de_en(self, de_text):
+        return self.model.generate_content(
+            ["Can you translate this text into english?"
+             "Translate as accurate as possible, dont translate names/! "
+             "Only answer with the translated text, nothing else!", de_text])
 
     def get_metadata_str(self, sample: dict):
         img = sample['image']  # PILPng
