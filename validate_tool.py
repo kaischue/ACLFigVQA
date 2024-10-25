@@ -1,27 +1,37 @@
-import tkinter as tk
-from tkinter import filedialog
-from PIL import Image, ImageTk, ImageDraw
-import pandas as pd
 import csv
 import os
+import tkinter as tk
+import webbrowser
 
+import pandas as pd
+from PIL import Image, ImageTk, ImageDraw
+
+from gemini_api import GeminiModel
 from load_dataset_disc import get_dataset_split_generator
 
 # Load CSV
-df = pd.read_csv('Data\\qa_gen_test.csv', encoding='utf-8')
+df = pd.read_csv('Data\\qa_gen\\rev4\\qa_gen.csv', encoding='utf-8')
 
-# Load the validated CSV if it exists
-validated_df = pd.read_csv('validated_answers.csv', encoding='utf-8') if os.path.exists(
-    'validated_answers.csv') else pd.DataFrame()
+# Check if validated_answers.csv exists, initialize if it doesn't
+validated_csv_path = 'validated_answers.csv'
+if os.path.exists(validated_csv_path):
+    validated_df = pd.read_csv(validated_csv_path, encoding='utf-8')
+else:
+    columns = df.columns.tolist() + ['corrected_answer_german', 'corrected_answer_english']
+    validated_df = pd.DataFrame(columns=columns)
+    validated_df.to_csv(validated_csv_path, index=False, encoding='utf-8')
+
 
 class App:
     def __init__(self, root, dataset_generator):
+        self.geminiModel = GeminiModel()
         self.root = root
         self.dataset_generator = dataset_generator
         self.dataset = list(self.dataset_generator)
         self.image_index = 0
         self.question_index = 0
         self.unique_images = df['img_file_name'].unique()
+        self.current_acl_paper_id = None
         self.validated_questions = validated_df[['img_file_name', 'question_german', 'question_english']].to_dict(
             'records')
         self.grid_size = 20  # initial grid size
@@ -30,22 +40,25 @@ class App:
 
     def setup_ui(self):
         self.canvas = tk.Canvas(root)
-        self.canvas.pack()
+        self.canvas.pack(padx=20, pady=10)
 
         self.metadata_label = tk.Label(root, text="", wraplength=400)
-        self.metadata_label.pack()
+        self.metadata_label.pack(pady=(10, 0))
 
         self.question_label_german = tk.Label(root, text="", wraplength=400)
-        self.question_label_german.pack()
+        self.question_label_german.pack(pady=(10, 0))
 
         self.answer_entry_german = tk.Text(root, width=50, height=5)
-        self.answer_entry_german.pack()
+        self.answer_entry_german.pack(pady=(5, 0))
 
         self.question_label_english = tk.Label(root, text="", wraplength=400)
-        self.question_label_english.pack()
+        self.question_label_english.pack(pady=(10, 0))
 
         self.answer_entry_english = tk.Text(root, width=50, height=5)
-        self.answer_entry_english.pack()
+        self.answer_entry_english.pack(pady=(5, 0))
+
+        self.chain_of_thought_label = tk.Label(root, text="", wraplength=400)
+        self.chain_of_thought_label.pack(pady=(10, 0))
 
         self.validate_next_button = tk.Button(root, text="Validate & Next", command=self.validate_and_next_question)
         self.validate_next_button.pack(side=tk.LEFT)
@@ -53,14 +66,37 @@ class App:
         self.skip_button = tk.Button(root, text="Skip", command=self.skip_question)
         self.skip_button.pack(side=tk.RIGHT)
 
+        self.translate_en_to_de_button = tk.Button(root, text="Translate EN to DE", command=self.translate_en_to_de)
+        self.translate_en_to_de_button.pack(side=tk.LEFT)
+
+        self.translate_de_to_en_button = tk.Button(root, text="Translate DE to EN", command=self.translate_de_to_en)
+        self.translate_de_to_en_button.pack(side=tk.RIGHT)
+
         self.canvas.bind("<MouseWheel>", self.on_mouse_wheel)
+        self.canvas.bind("<ButtonPress-1>", self.start_drag)
+        self.canvas.bind("<B1-Motion>", self.drag_grid)
+        self.grid_offset_x = 0
+        self.grid_offset_y = 0
+
+    def start_drag(self, event):
+        self.drag_start_x = event.x
+        self.drag_start_y = event.y
+
+    def drag_grid(self, event):
+        dx = event.x - self.drag_start_x
+        dy = event.y - self.drag_start_y
+        self.grid_offset_x += dx
+        self.grid_offset_y += dy
+        self.drag_start_x = event.x
+        self.drag_start_y = event.y
+        self.load_image_and_question()
 
     def draw_grid(self, image):
         draw = ImageDraw.Draw(image)
-        for i in range(0, image.width, self.grid_size):
-            draw.line((i, 0, i, image.height), fill="black")
-        for i in range(0, image.height, self.grid_size):
-            draw.line((0, i, image.width, i), fill="black")
+        for i in range(self.grid_offset_x, image.width, self.grid_size):
+            draw.line((i, 0, i, image.height), fill="grey")
+        for i in range(self.grid_offset_y, image.height, self.grid_size):
+            draw.line((0, i, image.width, i), fill="grey")
         return image
 
     def on_mouse_wheel(self, event):
@@ -95,6 +131,11 @@ class App:
         metadata = self.dataset[self.image_index]
         image_path = f"Data\\VQAMeta\\training_data\\train\\{metadata['label']}\\{metadata['img_file_name']}"
 
+        if self.current_acl_paper_id != metadata['acl_paper_id']:
+            self.current_acl_paper_id = metadata['acl_paper_id']
+            pdf_path = f"Data\\VQAMeta\\papers\\pdfs\\{metadata['acl_paper_id']}.pdf"
+            webbrowser.open(pdf_path)
+
         image = Image.open(image_path)
         image_with_grid = self.draw_grid(image.copy())
         self.img = ImageTk.PhotoImage(image_with_grid)
@@ -108,6 +149,19 @@ class App:
         self.question_label_english.config(text=f"English Question: {row['question_english']}")
         self.answer_entry_english.delete('1.0', tk.END)
         self.answer_entry_english.insert('1.0', row['answer_english'])
+        self.chain_of_thought_label.config(text=f"Chain of Thought: {row['chain_of_thought']}")
+
+    def translate_en_to_de(self):
+        english_text = self.answer_entry_english.get('1.0', tk.END).strip()
+        translated_text = self.geminiModel.translate_en_de(english_text).text
+        self.answer_entry_german.delete('1.0', tk.END)
+        self.answer_entry_german.insert('1.0', translated_text)
+
+    def translate_de_to_en(self):
+        german_text = self.answer_entry_german.get('1.0', tk.END).strip()
+        translated_text = self.geminiModel.translate_de_en(german_text).text
+        self.answer_entry_english.delete('1.0', tk.END)
+        self.answer_entry_english.insert('1.0', translated_text)
 
     def validate_and_next_question(self):
         row = self.current_questions.iloc[self.question_index]
