@@ -17,7 +17,7 @@ validated_csv_path = 'validated_answers.csv'
 if os.path.exists(validated_csv_path):
     validated_df = pd.read_csv(validated_csv_path, encoding='utf-8')
 else:
-    columns = df.columns.tolist() + ['corrected_answer_german', 'corrected_answer_english']
+    columns = df.columns.tolist() + ['corrected_answer_german', 'corrected_answer_english', 'flagged']
     validated_df = pd.DataFrame(columns=columns)
     validated_df.to_csv(validated_csv_path, index=False, encoding='utf-8')
 
@@ -40,25 +40,43 @@ class App:
 
     def setup_ui(self):
         self.canvas = tk.Canvas(root)
-        self.canvas.pack(padx=20, pady=10)
+        self.canvas.pack(side="left", padx=10, pady=5, fill="both", expand=True)
+        self.scrollbar = tk.Scrollbar(root, orient="vertical", command=self.canvas.yview)
+        self.scrollbar.pack(side="right", fill="y")
+        self.canvas.config(yscrollcommand=self.scrollbar.set)
 
         self.metadata_label = tk.Label(root, text="", wraplength=400)
         self.metadata_label.pack(pady=(10, 0))
 
-        self.question_label_german = tk.Label(root, text="", wraplength=400)
-        self.question_label_german.pack(pady=(10, 0))
+        self.question_frame_german = tk.Frame(root)
+        self.question_frame_german.pack(pady=(10, 0))
+
+        self.question_label_german = tk.Label(self.question_frame_german, text="", wraplength=400)
+        self.question_label_german.pack(side=tk.LEFT)
+
+        self.copy_button_german = tk.Button(self.question_frame_german, text="Copy", command=self.copy_german)
+        self.copy_button_german.pack(side=tk.RIGHT)
 
         self.answer_entry_german = tk.Text(root, width=50, height=5)
         self.answer_entry_german.pack(pady=(5, 0))
 
-        self.question_label_english = tk.Label(root, text="", wraplength=400)
-        self.question_label_english.pack(pady=(10, 0))
+        self.question_frame_english = tk.Frame(root)
+        self.question_frame_english.pack(pady=(10, 0))
+
+        self.question_label_english = tk.Label(self.question_frame_english, text="", wraplength=400)
+        self.question_label_english.pack(side=tk.LEFT)
+
+        self.copy_button_english = tk.Button(self.question_frame_english, text="Copy", command=self.copy_english)
+        self.copy_button_english.pack(side=tk.RIGHT)
 
         self.answer_entry_english = tk.Text(root, width=50, height=5)
         self.answer_entry_english.pack(pady=(5, 0))
 
         self.chain_of_thought_label = tk.Label(root, text="", wraplength=400)
         self.chain_of_thought_label.pack(pady=(10, 0))
+
+        self.flag_button = tk.Button(root, text="Flag as Needs Improvement", command=self.flag_question)
+        self.flag_button.pack(pady=(10, 0), side=tk.TOP)
 
         self.validate_next_button = tk.Button(root, text="Validate & Next", command=self.validate_and_next_question)
         self.validate_next_button.pack(side=tk.LEFT)
@@ -77,6 +95,14 @@ class App:
         self.canvas.bind("<B1-Motion>", self.drag_grid)
         self.grid_offset_x = 0
         self.grid_offset_y = 0
+
+    def copy_german(self):
+        self.root.clipboard_clear()
+        self.root.clipboard_append(self.question_label_german.cget("text"))
+
+    def copy_english(self):
+        self.root.clipboard_clear()
+        self.root.clipboard_append(self.question_label_english.cget("text"))
 
     def start_drag(self, event):
         self.drag_start_x = event.x
@@ -106,6 +132,17 @@ class App:
             self.grid_size = max(5, self.grid_size - 5)
         self.load_image_and_question()
 
+    def flag_question(self):
+        row = self.current_questions.iloc[self.question_index].copy()  # Create a copy of the row
+        row['flagged'] = True  # Mark the question as flagged
+
+        # Save the flagged row to the CSV
+        with open('validated_answers.csv', 'a', newline='', encoding='utf-8') as file:
+            writer = csv.writer(file)
+            writer.writerow(list(row) + [''] * (len(df.columns) - len(row)) + [row['flagged']])
+
+        self.next_question()
+
     def load_image_and_question(self):
         self.img_file_name = self.unique_images[self.image_index]
         self.current_questions = df[df['img_file_name'] == self.img_file_name]
@@ -113,8 +150,8 @@ class App:
         while self.question_index < len(self.current_questions):
             row = self.current_questions.iloc[self.question_index]
             if not any((row['img_file_name'] == v['img_file_name'] and row['question_german'] == v[
-                'question_german'] and row['question_english'] == v['question_english']) for v in
-                       self.validated_questions):
+                'question_german'] and row['question_english'] == v['question_english'] and not v.get('flagged')) for v
+                       in self.validated_questions):
                 break
             self.question_index += 1
 
@@ -141,12 +178,15 @@ class App:
         self.img = ImageTk.PhotoImage(image_with_grid)
         self.canvas.config(width=image.width, height=image.height)
         self.canvas.create_image(0, 0, anchor=tk.NW, image=self.img)
+        self.canvas.config(scrollregion=(0, 0, image.width, image.height))
 
         self.metadata_label.config(text=f"Metadata: {metadata['caption']}")
         self.question_label_german.config(text=f"German Question: {row['question_german']}")
+        self.question_label_german.config(text=row['question_german'])
         self.answer_entry_german.delete('1.0', tk.END)
         self.answer_entry_german.insert('1.0', row['answer_german'])
         self.question_label_english.config(text=f"English Question: {row['question_english']}")
+        self.question_label_english.config(text=row['question_english'])
         self.answer_entry_english.delete('1.0', tk.END)
         self.answer_entry_english.insert('1.0', row['answer_english'])
         self.chain_of_thought_label.config(text=f"Chain of Thought: {row['chain_of_thought']}")
