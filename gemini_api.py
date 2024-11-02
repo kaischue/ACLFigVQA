@@ -15,8 +15,6 @@ from utils import load_yaml_to_dict, shuffle_lists_in_dict, find_first_mention_o
 GEMINI_MODEL = "gemini-1.5-pro-latest"
 # GEMINI_MODEL = "gemini-1.5-flash-latest"
 
-VISUAL_LABELS = ["bar charts", "boxplots", "confusion matrix", "Line graph_chart",
-                 "pareto", "pie chart", "scatter plot", "venn diagram"]
 TEMPLATE_FILE = "Data\\vqa_templates_merged.yaml"
 QA_GEN_CSV_FILE_REV1 = "Data\\qa_gen\\rev1\\qa_gen.csv"
 QA_GEN_CSV_FILE_REV2 = "Data\\qa_gen\\rev2\\qa_gen.csv"
@@ -236,7 +234,7 @@ def get_rows_and_save_img_qa(sample, qa_gen_csv_file, out_path, regen_img=False)
 
 if __name__ == '__main__':
     model = GeminiModel()
-    ds_iterator = iter(get_dataset_split_generator(split="train"))
+    ds_iterator = iter(get_dataset_split_generator(split="train", only_visual=True))
 
     if not os.path.isfile(QA_GEN_CSV_FILE_REV1):
         write_row_to_csv(QA_GEN_CSV_FILE_REV1,
@@ -266,8 +264,6 @@ if __name__ == '__main__':
     try:
         while True:
             ds_sample = next(ds_iterator)
-            if ds_sample["label"] not in VISUAL_LABELS:
-                continue
 
             # generate qa
             if df_qa_gen_train_rev1.loc[df_qa_gen_train_rev1['img_file_name'] == ds_sample["img_file_name"]].empty:

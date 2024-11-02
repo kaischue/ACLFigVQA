@@ -237,7 +237,7 @@ class App:
 
 
 if __name__ == '__main__':
-    dataset_generator = get_dataset_split_generator()
+    dataset_generator = get_dataset_split_generator(only_visual=True)
     root = tk.Tk()
     app = App(root, dataset_generator)
     root.mainloop()
