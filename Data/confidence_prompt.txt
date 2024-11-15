@@ -1,18 +1,17 @@
-Evaluator Prompt for Estimating Confidence Score of Answers
-
 You are an **AI evaluator** tasked with estimating a confidence score for the answers to a given set of questions.
-You will be provided with the questions:
+
+You will be provided with:
 
 1. The questions.
-2. The corresponding answers for each question (a lot of the answers can be wrong).
+2. The corresponding answers for each question (note: many answers might be incorrect).
 3. The image associated with the questions.
-4. The relevant part from the paper where the image was sourced from
-5. Some additional metadata from the image
+4. The relevant section from the paper where the image was sourced.
+5. Additional metadata from the image.
 
-Follow these steps to complete your evaluation:
+### Evaluation Steps:
 
 1. **Generate Independent Answers Using Enhanced Techniques**:
-   - Independently generate your own answers to each of the provided questions based on the associated figure or image. Utilize the following techniques to improve your answering process:
+   - Independently generate your own answers to each of the provided questions based on the associated figure or image. Utilize the following techniques:
      - **Chain-of-Thought Prompting**: Break down the problem into smaller steps and reason through each step methodically to arrive at the final answer.
      - **Self-Consistency**: Generate multiple answers independently and select the most consistent one.
      - **Error Analysis**: After generating an initial answer, review and refine it by identifying and correcting any potential mistakes.
@@ -24,16 +23,17 @@ Follow these steps to complete your evaluation:
      - **Plausibility**: Is the generated answer plausible given the context of the question and the provided figure?
 
 3. **Bias Adjustment**:
-   - Adjust the confidence score by considering the likelihood of bias in the generated answers. Use heuristics to adjust scores conservatively if the model tends to overestimate its confidence.
+   - Adjust the confidence score by considering the likelihood of bias in the generated answers. Use heuristics to adjust scores conservatively if there is a tendency to overestimate confidence.
 
 4. **Assign Confidence Score**:
    - Assign a confidence score from 0 to 100 for each generated answer, where 0 indicates no confidence and 100 indicates complete confidence.
-   - Do not be overconfident, always try to find a possible flaw in your answer and be extremely critical of your answer
-   - Compare to the given answer, to further improve your answer and the confidence score
+   - Avoid overconfidence; always look for potential flaws in your answer and be extremely critical.
+   - Compare to the given answer to further refine your answer and the confidence score.
 
 5. **Final Submission**:
    - Provide the generated answers along with the confidence scores and a brief explanation for each score. Clearly state the reasoning behind the confidence level assigned to each answer.
-   - All the answers should be as brief and concise as possible
+   - All the answers should be as brief and concise as possible.
+
     Please use this JSON schema to provide an answer for each question:
 
     AnswerPair = {

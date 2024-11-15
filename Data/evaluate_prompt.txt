@@ -1,65 +1,92 @@
-You are an **AI evaluator** tasked with comparing the original and revised versions of the questions and answers. You will be provided with:
+You are an **AI evaluator** tasked with comparing the original and revised versions of the questions and answers.
+
+You will be provided with:
 
 1. The original and revised versions of the questions.
 2. The corresponding answers for each version.
 3. The image associated with the questions.
-4. The relevant part from the paper where the image was sourced from
-5. Some additional metadata from the image
-6. The templates most questions where created from
+4. The relevant section from the paper where the image was sourced (included in the metadata).
+5. Additional metadata from the image.
+6. The templates most questions were created from.
 
-Your goal is to determine which version is better. Follow these steps to complete your evaluation:
+### Metadata String:
+The metadata string is structured as follows:
+
+- Here is some additional info for the image:
+  - The label of the image is: {label}.
+  - The caption of the image is: {caption}.
+  - The inline reference of the image is: {inline_reference}.
+  - And the relevant section from the research paper that includes the figure caption.
+  - This section starts from {self.figure_mention_range} characters before and after the first mention of the figure caption:
+  - {relevant_pdf_str}
+
+You will find the metadata at the end of this message.
+
+### Categories:
+
+1. **Simple Retrieval**:
+   - **Focus**: Directly locating and extracting a single value or label from the chart based on its position or color. No calculations or comparisons are involved.
+   - **Criteria**:
+     - Relies on visual cues such as position or color.
+     - Does not require any calculations.
+   - **Examples**:
+     - Positional: "What is the topmost bar in the chart?"
+     - Color: "What is the value of the green bar?"
+
+2. **Simple Calculation (1-Step)**:
+   - **Focus**: Performing one arithmetic operation (addition, subtraction, multiplication, division, ratio, or a simple comparison like "greater than") on one or two data points identified by their position or color.
+   - **Criteria**:
+     - Involves a single arithmetic operation.
+     - Uses one or two data points for calculation.
+   - **Examples**:
+     - Positional: "What is the difference between the heights of the first and last bars?"
+     - Color: "What is the sum of the values of the blue and red bars?"
+
+3. **Complex Calculation and Logical Reasoning**:
+   - **Focus**: Performing multiple arithmetic operations or more involved calculations (like average, median, sum of a range) on data points identified by position or color. It includes logical reasoning to determine which calculations to perform or making intricate comparisons, decisions, or inferences.
+   - **Criteria**:
+     - Involves multiple arithmetic operations or steps.
+     - Requires additional logical steps, intermediate calculations, or comparisons.
+   - **Examples**:
+     - Positional: "What is the average height of all bars except the first and last?"
+     - Color: "What is the average value of all blue bars?"
+     - Positional: "Which two bars together have a height that sums to 10?"
+     - Color: "Is the sum of the heights of the blue bars greater than the average height of the green bars?"
+
+4. **Additional Context Question**:
+   - **Focus**: These questions require background information or context from the relevant paper or inline reference to answer.
+   This always involves consulting the provided research paper or provided inline reference in the metadata string.
+   - **Criteria**:
+     - Can only be answered with information from the research paper ({relevant_pdf_str}) or the inline reference ({inline_reference}).
+     - Cannot be answered using just the figure or its caption.
+     - Requires the reader to have read and understood the paper to integrate additional data or context to derive the answer.
+
+### Evaluation Steps:
 
 1. **Answer the Questions Independently**:
-   - First, independently answer each of the original and revised questions.
+   - Independently answer each of the original and revised questions.
 
 2. **Compare Questions**:
    - Compare the original and revised versions of each question based on the following criteria:
-     1. **Visual Attributes**: Determine if each question genuinely requires examination of the visual attributes of the image.
-     2. **Category Coverage**: Verify that the questions are from the specified categories:
-        - "Simple_Retrieval"
-        - "Simple_Calculation_1-Step"
-        - "Complex_Calculation_Multi-Step"
-        - "Logical_Reasoning"
-        - One that requires additional context from the paper.
-     3. **Relevance and Fit**: Assess whether the questions fit the provided figure and are relevant.
-     4. **Clarity and Unambiguity**: Evaluate whether the questions can be answered clearly in one way, avoiding ambiguous questions with multiple possible answers.
-     6. **Answer-ability**: Ensure the question can be answered from the image and metadata. Also make sure the question can be answered accurately. Heavily criticize questions that cant be answered from the material.
-     7. **Complexity Appropriateness**: Ensure the complexity level is suitable for each question.
-     8. **Context Integration**: Evaluate the effectiveness of context integration from the figure or accompanying text.
-     9. **Language Precision**: Check for clarity, grammar, and phrasing.
-     10. **Variety**: Ensure a variety of question types and difficulty levels.
-     11. **Creativity**: Assess the originality and creativity of the questions (only relevant for questions with additional context).
-
-Here are the definitions of the different categories:
-
-Simple Retrieval:
-Directly locating and extracting a single value or label from the chart based on its position or color. No calculations or comparisons are involved.
-Focus: Locating information based on visual cues.
-Example (Positional): "What is the Topmost bar?", "What is the Leftmost data point in the third group?"
-Example (Color): "What is the value of the green bar?" "Which legend item is represented by blue?"
-
-Simple Calculation (1-Step):
-Performing one arithmetic operation (addition, subtraction, multiplication, division, ratio, or a simple comparison like "greater than") on one or two data points identified by their position or color.
-Focus: A single, direct calculation.
-Example (Positional): "What is the difference between the first and last bar?" "What is the ratio of the two leftmost bars?"
-Example (Color): "What is the sum of values of the blue and red bars?" "Is the green bar larger than the orange bar?"
-
-Complex Calculation (Multi-Step):
-Performing multiple arithmetic operations or more involved calculations (like average, median, sum of a range) on data points identified by position or color. The logic is usually straightforward – it's about the calculations themselves.
-Focus: Performing a series of calculations.
-Example (Positional): "What is the average of all bars except the first and last?" "What is the sum of the top three values?"
-Example (Color): "What is the average value of all blue bars?" "What is the sum of the squares of the red bar values?"
-
-Logical Reasoning (Positional/Color):
-Definition: Questions that require determining which calculations to perform or involve more intricate comparisons, decisions, or inferences. The calculations might be simple, but the emphasis is on problem-solving and strategy. It often involves finding relationships between data points.
-Focus: Deciding what steps to take, making comparisons, or drawing conclusions.
-Example (Positional): "Which two bars have a combined value 10?", "Which section of the chart has the greatest increase in value?"
-Example (Color): "Is the blue bars' sum greater than the green bars' average?", "Which color represents the smallest overall contribution?"
+     1. **Visual Attributes**: Does each question genuinely require examination of the visual attributes of the image?
+     2. **Category Coverage**: Verify that the questions are from these categories:
+        - "Simple Retrieval"
+        - "Simple Calculation"
+        - "Complex Calculation and Logical Reasoning" (2)
+        - "Additional Context Question".
+     3. **Relevance and Fit**: Do the questions fit the provided figure and are they relevant?
+     4. **Clarity and Unambiguity**: Are the questions clear and unambiguous, allowing for only one correct answer?
+     5. **Answer-ability**: Can the questions be answered accurately using the image and metadata? Criticize questions that cannot.
+     6. **Complexity Appropriateness**: Is the complexity level suitable for each question?
+     7. **Context Integration**: Evaluate the effectiveness of context integration from the figure or accompanying text.
+     8. **Language Precision**: Check for clarity, grammar, and phrasing.
+     9. **Variety**: Ensure a variety of question types and difficulty levels.
+     10. **Creativity**: Assess the originality and creativity of the questions (only relevant for questions with additional context).
 
 3. **Select the Better Question**:
    - Based on the comparison, select the better version of each question (original or revised).
-   If you think both questions do not work at all for the figure (based on the evaluation criteria), make up a question of your own.
-   Always choose a question that is answerable over a questions that is not answerable!
+   - If both questions do not work for the figure (based on the evaluation criteria), create a question of your own.
+   - Always choose a question that is answerable over a question that is not.
 
 4. **Compare Answers**:
    - Compare the answers to each question based on the following criteria:
@@ -71,20 +98,22 @@ Example (Color): "Is the blue bars' sum greater than the green bars' average?", 
 
 5. **Select the Better Answer**:
    - Based on the comparison, select the better version of each answer (original or revised).
-   In case the answer of a question is wrong compared to your own answer, please correct them based on your answer.
+   - If the answer to a question is incorrect compared to your own answer, correct it based on your answer.
 
 6. **Final Submission**:
-    Please provide both the selected questions and answers in English and German.
-    Please use this JSON schema:
+   - Provide both the selected questions and answers in English and German.
+   - Please use this JSON schema:
 
-    QAPair = {"question_german": str, "question_english": str, "answer_english": str, "answer_german": str}
-    Return: [QAPair1, QAPair2, ...]
+### Example JSON Schema:
 
-    Here is an example of how the output looks like, it starts and ends with a square bracket:
-    "[
-        {"question_german": "german question 1", "question_english": "english question 1", "answer_english": "english answer 1", "answer_german": "german answer 1"},
-        {"question_german": "german question 2", "question_english": "english question 2", "answer_english": "english answer 2", "answer_german": "german answer 2"}
-    ]"
+QAPair = {"question_german": str, "question_english": str, "answer_english": str, "answer_german": str}
+Return: [QAPair1(Simple Retrival), QAPair2(Simple Calculation), QAPair3(Complex Calculation and Logical Reasoning), QAPair4(Complex Calculation and Logical Reasoning), QAPair5(Additional Context Question)]
 
-    ONLY reply with the JSON, nothing else! No additional text, just the JSON! Ensure the response is a valid JSON object!
-    The JSON string must be parsable directly form your response with no adjustment required. This is extremely important.
+Here is an example of how the output looks like, it starts and ends with a square bracket:
+"[
+    {"question_german": "german question 1", "question_english": "english question 1", "answer_english": "english answer 1", "answer_german": "german answer 1"},
+    {"question_german": "german question 2", "question_english": "english question 2", "answer_english": "english answer 2", "answer_german": "german answer 2"}
+]"
+
+ONLY reply with the JSON, nothing else! No additional text, just the JSON! Ensure the response is a valid JSON object!
+The JSON string must be parsable directly form your response with no adjustment required. This is extremely important.

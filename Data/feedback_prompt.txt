@@ -1,87 +1,118 @@
-You will get the image, the templates and the generated question answer pairs as well as the metadata string and the relevant section of the paper.
-Evaluate the following criteria for the generated questions:
+### Metadata String:
+You will receive the image, the generated QA-Pairs, the templates, and metadata string which includes a relevant paper section ({relevant_pdf_str}). The metadata string is structured as follows:
 
-1. **Visual Attributes**: Determine if the questions are genuinely visual questions, requiring examination of the visual attributes of the image, such as color, position, or orientation.
-2. **Category Coverage**: Confirm that there are five questions, each from the specified categories: "Simple_Retrieval," "Simple_Calculation_1-Step," "Complex_Calculation_Multi-Step," "Logical_Reasoning," and one that requires additional context from the paper.
-3. **Relevance and Fit**: Assess whether the questions fit the provided figure appropriately and are relevant to the visual elements present.
-4. **Clarity and Unambiguity**: Evaluate whether the questions can be answered clearly in one way, avoiding ambiguous questions with multiple possible answers.
-5. **Answer-ability**: Ensure the question can be answered from the image and metadata. Also make sure the question can be answered accurately. Heavily criticize questions that cant be answered from the material.
-6. **Complexity Appropriateness**: Ensure that the questions maintain the intended complexity level—simple, one-step calculations, multi-step calculations, logical reasoning, etc.
-7. **Language Precision**: Check for clarity, grammar, and phrasing. Are the questions clearly worded and free of errors?
-8. **Variety**: Ensure there is a variety of question types and difficulty levels to cater to different analytical skills.
+- Here is some additional info for the image:
+  - The label of the image is: {label}.
+  - The caption of the image is: {caption}.
+  - The inline reference of the image is: {inline_reference}.
+  - And the relevant section from the research paper that includes the figure caption.
+  - This section starts from {self.figure_mention_range} characters before and after the first mention of the figure caption:
+  - {relevant_pdf_str}
 
-Here are the definitions of the different categories:
+You will find the metadata at the end of this message.
 
-Simple Retrieval:
-Directly locating and extracting a single value or label from the chart based on its position or color. No calculations or comparisons are involved.
-Focus: Locating information based on visual cues.
-Example (Positional): "What is the Topmost bar?", "What is the Leftmost data point in the third group?"
-Example (Color): "What is the value of the green bar?" "Which legend item is represented by blue?"
+### Categories:
 
-Simple Calculation (1-Step):
-Performing one arithmetic operation (addition, subtraction, multiplication, division, ratio, or a simple comparison like "greater than") on one or two data points identified by their position or color.
-Focus: A single, direct calculation.
-Example (Positional): "What is the difference between the first and last bar?" "What is the ratio of the two leftmost bars?"
-Example (Color): "What is the sum of values of the blue and red bars?" "Is the green bar larger than the orange bar?"
+1. **Simple Retrieval**:
+   - **Focus**: Directly locating and extracting a single value or label from the chart based on its position or color. No calculations or comparisons are involved.
+   - **Criteria**:
+     - Relies on visual cues such as position or color.
+     - Does not require any calculations.
+   - **Examples**:
+     - Positional: "What is the topmost bar in the chart?"
+     - Color: "What is the value of the green bar?"
 
-Complex Calculation (Multi-Step):
-Performing multiple arithmetic operations or more involved calculations (like average, median, sum of a range) on data points identified by position or color. The logic is usually straightforward – it's about the calculations themselves.
-Focus: Performing a series of calculations.
-Example (Positional): "What is the average of all bars except the first and last?" "What is the sum of the top three values?"
-Example (Color): "What is the average value of all blue bars?" "What is the sum of the squares of the red bar values?"
+2. **Simple Calculation (1-Step)**:
+   - **Focus**: Performing one arithmetic operation (addition, subtraction, multiplication, division, ratio, or a simple comparison like "greater than") on one or two data points identified by their position or color.
+   - **Criteria**:
+     - Involves a single arithmetic operation.
+     - Uses one or two data points for calculation.
+   - **Examples**:
+     - Positional: "What is the difference between the heights of the first and last bars?"
+     - Color: "What is the sum of the values of the blue and red bars?"
 
-Logical Reasoning (Positional/Color):
-Definition: Questions that require determining which calculations to perform or involve more intricate comparisons, decisions, or inferences. The calculations might be simple, but the emphasis is on problem-solving and strategy. It often involves finding relationships between data points.
-Focus: Deciding what steps to take, making comparisons, or drawing conclusions.
-Example (Positional): "Which two bars have a combined value 10?", "Which section of the chart has the greatest increase in value?"
-Example (Color): "Is the blue bars' sum greater than the green bars' average?", "Which color represents the smallest overall contribution?"
+3. **Complex Calculation and Logical Reasoning**:
+   - **Focus**: Performing multiple arithmetic operations or more involved calculations (like average, median, sum of a range) on data points identified by position or color. It includes logical reasoning to determine which calculations to perform or making intricate comparisons, decisions, or inferences.
+   - **Criteria**:
+     - Involves multiple arithmetic operations or steps.
+     - Requires additional logical steps, intermediate calculations, or comparisons.
+   - **Examples**:
+     - Positional: "What is the average height of all bars except the first and last?"
+     - Color: "What is the average value of all blue bars?"
+     - Positional: "Which two bars together have a height that sums to 10?"
+     - Color: "Is the sum of the heights of the blue bars greater than the average height of the green bars?"
 
-For questions requiring additional context:
+4. **Additional Context Question**:
+   - **Focus**: These questions require background information or context from the relevant paper or inline reference to answer.
+   This always involves consulting the provided research paper or provided inline reference in the metadata string.
+   - **Criteria**:
+     - Can only be answered with information from the research paper ({relevant_pdf_str}) or the inline reference ({inline_reference}).
+     - Cannot be answered using just the figure or its caption.
+     - Requires the reader to have read and understood the paper to integrate additional data or context to derive the answer.
 
-1. **Contextual Necessity**: Evaluate how well the question integrates additional context from the paper, caption, or inline reference.
-2. **Dependency**: Confirm that the question can’t be answered without referencing the additional context provided.
-3. **Complexity**: Ensure that the added context increases the complexity and depth of the question.
-4. **Creativity**: Assess the originality and creativity of the questions. Do they bring a unique perspective or challenge?
+### Evaluate the following criteria for the generated questions:
 
-Additionally, provide feedback on the answers based on the following criteria:
+1. **Visual Attributes**: Are the questions genuinely visual, requiring examination of the image's visual attributes (e.g., color, position, orientation)?
+2. **Category Coverage**: Are there five questions, each from these categories: "Simple Retrieval", "Simple Calculation", "Complex Calculation and Logical Reasoning"(2) and "Additional Context Question"?
+3. **Relevance and Fit**: Do the questions appropriately fit the figure and relate to the visual elements present?
+4. **Clarity and Unambiguity**: Are the questions clear and unambiguous, allowing for only one correct answer?
+5. **Answer-ability**: Can the questions be answered accurately using the image and metadata? Criticize questions that cannot.
+6. **Complexity Appropriateness**: Do the questions match the intended complexity level (simple, one-step, complex, reasoning)?
+7. **Language Precision**: Are the questions clear, grammatically correct, and free of errors?
+8. **Variety**: Is there a variety of question types and difficulty levels to address different analytical skills?
 
-1. **Accuracy**: Verify that the provided answers are correct and match the information present in the figure.
-2. **Clarity**: Ensure the answers are clearly stated and easy to understand.
-3. **Completeness**: Confirm that the answers provide all necessary information required by the questions.
-4. **Conciseness**: Check that the answers are concise and to the point, without unnecessary elaboration.
-5. **Confidence Level**: Indicate how confident you are in the correctness of the answers provided, compare to your own answers.
+### Questions Requiring Additional Context:
 
-**Grading Scheme for Questions:**
+0. Also grade the Question based on same criteria for the non context questions
+1. **Contextual Necessity**: How well does the question integrate additional context from the paper, or inline reference?
+2. **Dependency**: Does the question need the context from the research paper to be answered? Make sure the question cant be answered form just the caption!
+3. **Complexity**: Does the added context increase the question's complexity and depth?
+4. **Creativity**: Assess the originality and creativity of the questions.
 
-| Criterion                  | Excellent (3)          | Good (2)           | Needs Improvement (1) | Poor (0)            |
-|----------------------------|------------------------|--------------------|-----------------------|---------------------|
-| Visual Attributes          | Clearly visual         | Mostly visual      | Partially visual      | Not visual          |
-| Category Coverage          | All categories         | Most categories    | Some categories       | Few/None categories |
-| Relevance and Fit          | Very relevant          | Mostly relevant    | Somewhat relevant     | Not relevant        |
-| Clarity and Unambiguity    | Clear, one answer      | Clear, minor ambiguity | Some ambiguity    | Very ambiguous      |
-| Accurately answerable      | Negligible imprecision | Minor imprecision  |Medium/High imprecision| Not answerable      |
-| Complexity Appropriateness | Perfectly fits         | Mostly fits        | Some fit issues       | Does not fit        |
-| Language Precision         | Very precise           | Good precision     | Some errors           | Many errors         |
-| Variety                    | Great variety          | Good variety       | Some variety          | Little variety      |
+### Feedback on Answers:
 
-**Grading Scheme for Questions with Additional Context:**
+1. **Accuracy**: Are the answers correct and match the figure's information?
+2. **Clarity**: Are the answers clearly stated and easy to understand?
+3. **Completeness**: Do the answers provide all necessary information required by the questions?
+4. **Conciseness**: Are the answers concise and to the point?
+5. **Confidence Level**: Indicate your confidence in the correctness of the provided answers.
 
-| Criterion           | Excellent (3)      | Good (2)           | Needs Improvement (1) | Poor (0)            |
-|---------------------|--------------------|--------------------|-----------------------|---------------------|
-| Contextual Necessity| Very necessary     | Mostly necessary   | Somewhat necessary    | Not necessary       |
-| Dependency          | Strong dependency  | Moderate dependency| Some dependency       | No dependency       |
-| Complexity          | Adds high complexity | Adds some complexity | Adds little complexity | Adds no complexity  |
-| Creativity          | Very creative      | Some creativity    | Little creativity     | Not creative        |
+### Grading Schemes:
 
-**Grading Scheme for Answers:**
+**For Questions:**
 
-| Criterion       | Excellent (3)      | Good (2)           | Needs Improvement (1) | Poor (0)            |
-|-----------------|--------------------|--------------------|-----------------------|---------------------|
-| Accuracy        | Completely correct | Mostly correct     | Somewhat correct      | Incorrect           |
-| Clarity         | Very clear         | Mostly clear       | Somewhat clear        | Unclear             |
-| Completeness    | Fully complete     | Mostly complete    | Somewhat complete     | Incomplete          |
-| Conciseness     | Very concise       | Mostly concise     | Somewhat concise      | Not concise         |
-| Confidence Level| Very confident     | Mostly confident   | Somewhat confident    | Not confident       |
+| Criterion                  | Excellent (3)    | Good (2)          | Needs Improvement (1) | Poor (0)           |
+|----------------------------|------------------|-------------------|-----------------------|--------------------|
+| Visual Attributes          | Clearly visual   | Mostly visual     | Partially visual      | Not visual         |
+| Category Coverage          | All categories   | Most categories   | Some categories       | Few/None categories|
+| Relevance and Fit          | Very relevant    | Mostly relevant   | Somewhat relevant     | Not relevant       |
+| Clarity and Unambiguity    | Clear, one answer| Clear, minor ambiguity | Some ambiguity   | Very ambiguous     |
+| Accurately answerable      | Negligible imprecision | Minor imprecision | Medium/High imprecision | Not answerable |
+| Complexity Appropriateness | Perfectly fits   | Mostly fits       | Some fit issues       | Does not fit       |
+| Language Precision         | Very precise     | Good precision    | Some errors           | Many errors        |
+| Variety                    | Great variety    | Good variety      | Some variety          | Little variety     |
 
-**Final Evaluation**: For each question and answer pair, provide the grading and an explanation based on the above criteria.
-Clearly state the strengths and areas for improvement for each pair.
+**For Questions with Additional Context:**
+
+| Criterion            | Excellent (3)      | Good (2)         | Needs Improvement (1) | Poor (0)            |
+|----------------------|--------------------|------------------|-----------------------|---------------------|
+| Contextual Necessity | Very necessary     | Mostly necessary | Somewhat necessary    | Not necessary       |
+| Dependency           | Strong dependency  | Moderate dependency | Some dependency   | No dependency       |
+| Complexity           | Adds high complexity | Adds some complexity | Adds little complexity | Adds no complexity |
+| Creativity           | Very creative      | Some creativity  | Little creativity     | Not creative        |
+
+**For Answers:**
+
+| Criterion          | Excellent (3)      | Good (2)         | Needs Improvement (1) | Poor (0)            |
+|--------------------|--------------------|------------------|-----------------------|---------------------|
+| Accuracy           | Completely correct | Mostly correct   | Somewhat correct      | Incorrect           |
+| Clarity            | Very clear         | Mostly clear     | Somewhat clear        | Unclear             |
+| Completeness       | Fully complete     | Mostly complete  | Somewhat complete     | Incomplete          |
+| Conciseness        | Very concise       | Mostly concise   | Somewhat concise      | Not concise         |
+| Confidence Level   | Very confident     | Mostly confident | Somewhat confident    | Not confident       |
+
+### Final Evaluation:
+
+For each question-answer pair, provide the grading and an explanation based on the above criteria. Clearly state the strengths and areas for improvement for each pair.
+For the question with additional context make sure the question actually requires context from the paper (or inline reference), give the section (or part of a section) as full text from the paper that is necessary to answer the question!
+This ensures that one actually has to read parts of the paper to answer this type of question.

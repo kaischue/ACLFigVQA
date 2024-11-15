@@ -1,12 +1,64 @@
-Prompt for Improving Questions Based on Feedback
+### Metadata String:
+You will receive the image, the generated QA-Pairs, the templates, the feedback, and metadata string which includes a relevant paper section ({relevant_pdf_str}). The metadata string is structured as follows:
+
+- Here is some additional info for the image:
+  - The label of the image is: {label}.
+  - The caption of the image is: {caption}.
+  - The inline reference of the image is: {inline_reference}.
+  - And the relevant section from the research paper that includes the figure caption.
+  - This section starts from {self.figure_mention_range} characters before and after the first mention of the figure caption:
+  - {relevant_pdf_str}
+
+You will find the metadata at the end of this message.
+
+### Categories:
+
+1. **Simple Retrieval**:
+   - **Focus**: Directly locating and extracting a single value or label from the chart based on its position or color. No calculations or comparisons are involved.
+   - **Criteria**:
+     - Relies on visual cues such as position or color.
+     - Does not require any calculations.
+   - **Examples**:
+     - Positional: "What is the topmost bar in the chart?"
+     - Color: "What is the value of the green bar?"
+
+2. **Simple Calculation (1-Step)**:
+   - **Focus**: Performing one arithmetic operation (addition, subtraction, multiplication, division, ratio, or a simple comparison like "greater than") on one or two data points identified by their position or color.
+   - **Criteria**:
+     - Involves a single arithmetic operation.
+     - Uses one or two data points for calculation.
+   - **Examples**:
+     - Positional: "What is the difference between the heights of the first and last bars?"
+     - Color: "What is the sum of the values of the blue and red bars?"
+
+3. **Complex Calculation and Logical Reasoning**:
+   - **Focus**: Performing multiple arithmetic operations or more involved calculations (like average, median, sum of a range) on data points identified by position or color. It includes logical reasoning to determine which calculations to perform or making intricate comparisons, decisions, or inferences.
+   - **Criteria**:
+     - Involves multiple arithmetic operations or steps.
+     - Requires additional logical steps, intermediate calculations, or comparisons.
+   - **Examples**:
+     - Positional: "What is the average height of all bars except the first and last?"
+     - Color: "What is the average value of all blue bars?"
+     - Positional: "Which two bars together have a height that sums to 10?"
+     - Color: "Is the sum of the heights of the blue bars greater than the average height of the green bars?"
+
+4. **Additional Context Question**:
+   - **Focus**: These questions require background information or context from the relevant paper or inline reference to answer.
+   This always involves consulting the provided research paper or provided inline reference in the metadata string.
+   - **Criteria**:
+     - Can only be answered with information from the research paper ({relevant_pdf_str}) or the inline reference ({inline_reference}).
+     - Cannot be answered using just the figure or its caption.
+     - Requires the reader to have read and understood the paper to integrate additional data or context to derive the answer.
+
+### Task Instructions:
 
 Based on the provided feedback, refine and improve the generated questions to ensure they meet the following criteria:
 
 1. **Visual Attributes**: Ensure all questions genuinely require examination of the visual attributes of the image, such as color, position, or orientation.
-2. **Category Coverage**: Verify that there are five questions, each from the specified categories: "Simple_Retrieval," "Simple_Calculation_1-Step," "Complex_Calculation_Multi-Step," "Logical_Reasoning," and one that requires additional context from the paper.
+2. **Category Coverage**: Verify that there are five questions, each from these categories: "Simple Retrieval", "Simple Calculation", "Complex Calculation and Logical Reasoning"(2), and one from "Additional Context QuestionAdditional Context Question".
 3. **Relevance and Fit**: Adjust the questions to fit the provided figure more appropriately and ensure they are relevant to the visual elements present.
 4. **Clarity and Unambiguity**: Refine the questions to be clear and unambiguous, ensuring each question can be answered in one way without multiple possible interpretations.
-5. **Complexity Appropriateness**: Ensure the complexity level of each question is appropriate—simple for one-step calculations, more complex for multi-step calculations, and suitable for logical reasoning tasks.
+5. **Complexity Appropriateness**: Ensure the complexity level of each question is appropriate—simple for one-step calculations, more complex for multi-step calculations and reasoning tasks.
 6. **Engagement**: Make the questions more engaging and thought-provoking to encourage deeper interaction with the figure.
 7. **Context Integration**: Enhance the questions to effectively integrate context from the figure or the accompanying text.
 8. **Language Precision**: Improve the clarity, grammar, and phrasing of the questions. Ensure they are clearly worded and free of errors.
@@ -15,7 +67,7 @@ Based on the provided feedback, refine and improve the generated questions to en
 
 For questions requiring additional context:
 
-1. **Contextual Necessity**: Refine the question to better integrate additional context from the paper, caption, or inline reference.
+1. **Contextual Necessity**: Refine the question to better integrate additional context from the paper or inline reference. Make sure the question cant be answered form just the caption or the question itself! The reader must read and understand the research paper to answer this question.
 2. **Dependency**: Ensure that the question cannot be answered without referencing the additional context provided.
 3. **Complexity**: Adjust the question to increase the complexity and depth added by the additional context.
 
@@ -26,13 +78,15 @@ Additionally, improve the answers based on the following feedback criteria:
 3. **Completeness**: Confirm that the answers provide all necessary information required by the questions.
 4. **Conciseness**: Ensure that the answers are concise and to the point, without unnecessary elaboration.
 
-Final Submission:
+### Final Submission:
 
 Please provide both the improved questions and answers in English and German.
 Please use this JSON schema:
 
+### JSON Schema:
+
 QAPair = {"question_german": str, "question_english": str, "answer_english": str, "answer_german": str}
-Return: [QAPair1, QAPair2, ...]
+Return: [QAPair1(Simple Retrival), QAPair2(Simple Calculation), QAPair3(Complex Calculation and Logical Reasoning), QAPair4(Complex Calculation and Logical Reasoning), QAPair5(Additional Context Question)]
 
 Here is an example of how the output looks like, it starts and ends with a square bracket:
 "[
