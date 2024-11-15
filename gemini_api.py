@@ -14,6 +14,7 @@ from utils import load_yaml_to_dict, shuffle_lists_in_dict, find_first_mention_o
 
 GEMINI_MODEL = "gemini-1.5-pro-latest"
 # GEMINI_MODEL = "gemini-1.5-flash-latest"
+SPLIT = "validation"
 
 TEMPLATE_FILE = "Data\\vqa_templates_merged.yaml"
 QA_GEN_CSV_FILE_REV1 = "Data\\qa_gen\\rev1\\qa_gen.csv"
@@ -27,6 +28,7 @@ JSON_FIX_PROMPT = "Data\\json_fix_prompt.txt"
 JSON_FIX_PROMPT2 = "Data\\json_fix_prompt2.txt"
 EVALUATE_PROMPT = "Data\\evaluate_prompt.txt"
 ANSWER_CONFIDENCE_PROMPT = "Data\\confidence_prompt.txt"
+CATEGORIZE_PROMPT = "Data\\categorize_prompt.txt"
 
 
 @dataclass
@@ -50,7 +52,7 @@ class QAPairGenConf:
 
 
 class GeminiModel:
-    def __init__(self, gemini_model_type=GEMINI_MODEL, temperature=None, figure_mention_range=5000,
+    def __init__(self, gemini_model_type=GEMINI_MODEL, temperature=None, figure_mention_range=8000,
                  templates_file=TEMPLATE_FILE, prompt_file=PROMPT_FILE, feedback_file=FEEDBACK_FILE,
                  improvement_file=IMPROVEMENT_FILE):
         genai.configure(api_key=GEMINI_API_KEY)
@@ -80,6 +82,9 @@ class GeminiModel:
 
         with open(ANSWER_CONFIDENCE_PROMPT, "r") as f:
             self.answer_confidence_prompt = f.read()
+
+        with open(CATEGORIZE_PROMPT, "r") as f:
+            self.categorize_prompt = f.read()
 
         self.figure_mention_range = figure_mention_range
 
@@ -121,7 +126,7 @@ class GeminiModel:
                           f'{relevant_pdf_str}'
         return metadata_string
 
-    def generate_qa(self, sample: dict, shuffle=False):
+    def generate_qa(self, sample: dict, shuffle=True):
         img = sample['image']  # PILPng
         metadata_string = self.get_metadata_str(sample)
 
@@ -174,6 +179,14 @@ class GeminiModel:
              "Revised Questions and Answers:\n" + qa_pairs_rev, "QA-Templates:\n" + template_str_dict,
              img, metadata_string])
 
+    def categorize_qa(self, sample: dict, qa_row: str):
+        img = sample['image']  # PILPng
+        metadata_string = self.get_metadata_str(sample)
+
+        return self.model.generate_content(
+            [self.categorize_prompt, f"\n\n{qa_row}\n\n", img, metadata_string])
+
+
     def try_fix_json(self, broken_json, error_msg):
         return self.model.generate_content(
             [self.json_fix_prompt, str(broken_json), error_msg])
@@ -206,12 +219,15 @@ def process_qa_objects(json_response, fix_json, dataclass_type, qa_gen_csv_file)
 
 
 def fix_and_save_qa(gemini_response, fix_json, qa_gen_csv_file, dataclass_type):
-    json_response = json_repair.loads(gemini_response.text, logging=True)
+    json_response = json_repair.loads(gemini_response.text)
     print(gemini_response.usage_metadata)
     process_qa_objects(json_response, fix_json, dataclass_type, qa_gen_csv_file)
 
 
-def get_rows_and_save_img_qa(sample, qa_gen_csv_file, out_path, regen_img=False):
+def get_rows_and_save_img_qa(sample, qa_gen_csv_file, out_path, regen_img=False, split=SPLIT):
+    if split == "validation":
+        split = "val"
+
     df_qa_gen_train = pandas.read_csv(qa_gen_csv_file)
 
     rows = df_qa_gen_train.loc[df_qa_gen_train['img_file_name'] == sample["img_file_name"]]
@@ -223,7 +239,7 @@ def get_rows_and_save_img_qa(sample, qa_gen_csv_file, out_path, regen_img=False)
     questions = [f"{eng} | {de}" for eng, de in zip(questions_eng, questions_de)]
     answers = [f"{eng} | {de}" for eng, de in zip(answers_eng, answers_de)]
 
-    img_path = f"Data\\VQAMeta\\training_data\\train\\{sample['label']}\\{sample['img_file_name']}"
+    img_path = f"Data\\VQAMeta\\training_data\\{split}\\{sample['label']}\\{sample['img_file_name']}"
     img_qa = f"{out_path}\\{Path(img_path).stem}_qa.png"
 
     if (not os.path.isfile(img_qa)) or regen_img:
@@ -234,7 +250,7 @@ def get_rows_and_save_img_qa(sample, qa_gen_csv_file, out_path, regen_img=False)
 
 if __name__ == '__main__':
     model = GeminiModel()
-    ds_iterator = iter(get_dataset_split_generator(split="train", only_visual=True))
+    ds_iterator = iter(get_dataset_split_generator(split=SPLIT, only_visual=True))
 
     if not os.path.isfile(QA_GEN_CSV_FILE_REV1):
         write_row_to_csv(QA_GEN_CSV_FILE_REV1,
