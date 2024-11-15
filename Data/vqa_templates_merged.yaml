@@ -1,17 +1,17 @@
 Simple_Retrieval:
   Positional:
-    - Topmost/Leftmost bar
-    - Bottommost/Rightmost bar
-    - Leftmost topmost bar
-    - Leftmost bottommost bar
-    - Rightmost topmost bar
-    - Rightmost bottommost bar
-    - First bar from the top/left in the second group from the top/left
-    - First bar from the bottom/right in the second group from the bottom/right
-    - Second bar from the bottom/right in the first group from the bottom/right
-    - Second bar from the right/bottom in the first group from the left/top
-    - Second bar from the top/left
-    - Second bar from the right/bottom
+    - Which bar is the topmost/leftmost?
+    - Which bar is the bottommost/rightmost?
+    - Which bar is the leftmost topmost?
+    - Which bar is the leftmost bottommost?
+    - Which bar is the rightmost topmost?
+    - Which bar is the rightmost bottommost?
+    - Which bar is the first from the top/left in the second group from the top/left?
+    - Which bar is the first from the bottom/right in the second group from the bottom/right?
+    - Which bar is the second from the bottom/right in the first group from the bottom/right?
+    - Which bar is the second from the right/bottom in the first group from the left/top?
+    - Which bar is the second from the top/left?
+    - Which bar is the second from the right/bottom?
     - How many bars are there on the <nth> tick from the <direction>? #12, 13, 14, 15
     - What is the label of the <nth> group of bars from the <direction>? #23, 24
     - How many groups of bars are there? #9
@@ -63,17 +63,17 @@ Simple_Calculation_1-Step:
     - Does the chart contain any zero data values? #1
     - Are the number of bars on each tick equal to the number of data series? #10
   Color:
-    - Leftmost <color> data
-    - Rightmost <color> data
-    - Second from the left <color> data
-    - Second from the right <color> data
+    - What is the Leftmost <color> data?
+    - What is the Rightmost <color> data?
+    - What is Second from the left <color> data?
+    - What is Second from the right <color> data?
     - What is the value of <color> line/bars in <x - axis - label>?
     - What is the ratio of the largest <color1> bar to the smallest <color2> bar? #gen
     - Is the sum of all <color> bars/data points greater than <value>? #gen
 Complex_Calculation_Multi-Step:
   Positional:
-    - Divide the sum of largest and lowest values by <n>
-    - Sum pie segments above <value>
+    - What is the sum of largest and lowest values divided by <n>?
+    - What is the sum of the pie segments above <value>?
     - What is the sum of top three values?
     - What is the sum of the bars in the second group from the left?
     - What is the sum of the bars in the first group from the right?
@@ -85,7 +85,7 @@ Complex_Calculation_Multi-Step:
     - What is the average of the highest and lowest value of <legend - label>?
     - What is the sum of the average of <legend - label - 1> and average of <legend - label - 2>?
     - What is the sum/difference of the maximum of <legend - label - 1> and minimum of <legend - label - 2>?
-    - Sum up the medians of all the data series in this chart
+    - What is the Sum of the medians of all the data series in this chart?
     - What is the average of all values above <value>?
     - What is the sum of the largest and smallest difference between <legend - label - 1> and <legend - label - 2>?
     - What is the maximum/minimum difference between <legend - label - 1> and <legend - label - 2>?
@@ -94,7 +94,7 @@ Complex_Calculation_Multi-Step:
     - What is the difference between maximum and minimum of <legend - label>?
     - What is the sum of the second highest and second lowest value of <legend - label>?
     - What is the sum of two middle values of <legend - label>?
-    - Product of two smallest values in the graph
+    - What is the Product of the two smallest values in the graph?
     - In how many cases, is the number of bars for a given '{{x_axis_label}}' not equal to the number of legend labels? #32
     - What is the '{{y_axis_label}}' of {{series_value}} at {{x_tick}}? #34
     - Across all '{{x_axis_label}}', what is the maximum value of '{{y_axis_label}}'? #38, 38a
@@ -127,11 +127,11 @@ Complex_Calculation_Multi-Step:
     - How many <color> bars are larger than <N>?
     - What is the average of the <color - 1> sum and <color - 2> sum?
     - What is the least difference between the <color - 1> and <color - 2> bars/line?
-    - Sum of the first <color - 1> and last <color - 2> bars/line points
-    - Difference between the two lowest <color> bars
-    - Add largest and smallest <color> line/bar values and divide by 2
-    - Sum/Average of <color - 1> and <color - 2> values in <x - axis - label>?
-    - Sum two rightmost values of <color> graph
+    - What is the sum of the first <color - 1> and last <color - 2> bars/line points?
+    - What is the difference between the two lowest <color> bars?
+    - What is the sum of the largest and smallest <color> line/bar values divided by 2?
+    - What is the Sum/Average of <color - 1> and <color - 2> values in <x - axis - label>?
+    - What is the sum of the two rightmost values of <color> graph?
     - How many <color> data points are above <value>?
     - What is the sum/average of two smallest/largest <color> bars?
     - What is the ratio of <color - 1> and <color - 2> segments?
@@ -144,7 +144,7 @@ Complex_Calculation_Multi-Step:
     - What is the maximum value in the <color> bars/line?
     - What is the minimum value in the <color> bars/line?
     - What is the sum of <color> bars/line?
-    - Sum of highest points in <color - 1> and <color - 2> lines/bars
+    - What is the sum of highest points in <color - 1> and <color - 2> lines/bars?
     - Take the sum of the two smallest <color - 1> bars and smallest <color - 2> bars, deduct the smaller value from the larger value, what’s the result?
 Logical_Reasoning:
   Positional:
