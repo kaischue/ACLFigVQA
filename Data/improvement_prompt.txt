@@ -43,12 +43,20 @@ You will find the metadata at the end of this message.
      - Color: "Is the sum of the heights of the blue bars greater than the average height of the green bars?"
 
 4. **Additional Context Question**:
-   - **Focus**: These questions require background information or context from the relevant paper or inline reference to answer.
-   This always involves consulting the provided research paper or provided inline reference in the metadata string.
+   - **Focus**: These questions require background information or context from the relevant paper or the provided reference to answer. This always involves consulting the provided research paper ({relevant_pdf_str}), the provided reference ({inline_reference}), and the associated diagram.
    - **Criteria**:
      - Can only be answered with information from the research paper ({relevant_pdf_str}) or the inline reference ({inline_reference}).
      - Cannot be answered using just the figure or its caption.
      - Requires the reader to have read and understood the paper to integrate additional data or context to derive the answer.
+     - The image is also needed to answer the question. It is about analyzing and questioning the image based on additional context, identifying trends, and finding explanations.
+     - All information must come exclusively from the paper or the diagram. Own considerations or information from other sources are not permitted, though interpretations based on the available data are allowed.
+   - **Example Methods**:
+     - Trend Analysis: Identify rising, falling, or stable trends in the data from the paper.
+     - Root Cause Analysis: Consider what external or internal factors from the paper might be causing the observed trends.
+     - Comparison with Historical Data: Compare the current data from the paper with historical data to recognize changes over time.
+     - Future Predictions: Use current trends from the paper to make predictions about future developments.
+     - Anomaly Detection: Look for unusual or unexpected values from the paper that deviate from general trends.
+     - Hypothesis Formation: Formulate hypotheses about why certain trends from the paper occur, and consider how you might test them.
 
 ### Task Instructions:
 
