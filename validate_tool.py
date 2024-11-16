@@ -23,11 +23,13 @@ else:
 
 
 class App:
-    def __init__(self, root, dataset_generator):
+    def __init__(self, root):
+        self.current_split = "train"
         self.geminiModel = GeminiModel()
         self.root = root
-        self.dataset_generator = dataset_generator
-        self.dataset = list(self.dataset_generator)
+        self.dataset = list(get_dataset_split_generator(only_visual=True, split="train"))
+        self.dataset_train_length = len(self.dataset)
+        self.dataset += list(get_dataset_split_generator(only_visual=True, split="validation"))
         self.image_index = 0
         self.question_index = 0
         self.unique_images = df['img_file_name'].unique()
@@ -164,9 +166,11 @@ class App:
                 self.root.quit()
             return
 
+        if self.image_index >= self.dataset_train_length:
+            self.current_split = "val"
         # Fetch corresponding dataset sample
         metadata = self.dataset[self.image_index]
-        image_path = f"Data\\VQAMeta\\training_data\\train\\{metadata['label']}\\{metadata['img_file_name']}"
+        image_path = f"Data\\VQAMeta\\training_data\\{self.current_split}\\{metadata['label']}\\{metadata['img_file_name']}"
 
         if self.current_acl_paper_id != metadata['acl_paper_id']:
             self.current_acl_paper_id = metadata['acl_paper_id']
@@ -237,7 +241,6 @@ class App:
 
 
 if __name__ == '__main__':
-    dataset_generator = get_dataset_split_generator(only_visual=True)
     root = tk.Tk()
-    app = App(root, dataset_generator)
+    app = App(root)
     root.mainloop()
