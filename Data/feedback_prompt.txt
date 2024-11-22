@@ -67,15 +67,16 @@ You will find the metadata at the end of this message.
 5. **Answer-ability**: Can the questions be answered accurately using the image and metadata? Criticize questions that cannot.
 6. **Complexity Appropriateness**: Do the questions match the intended complexity level (simple, one-step, complex, reasoning)?
 7. **Language Precision**: Are the questions clear, grammatically correct, and free of errors?
-8. **Variety**: Is there a variety of question types and difficulty levels to address different analytical skills?
+8. **Variety**: Is there a variety of question types and difficulty levels to address different analytical skills? (grade at the end for all questions)
 
 ### Questions Requiring Additional Context:
 
 0. Also grade the Question based on same criteria for the non context questions
-1. **Contextual Necessity**: How well does the question integrate additional context from the paper, or inline reference?
-2. **Dependency**: Does the question need the context from the research paper to be answered? Make sure the question cant be answered form just the caption!
-3. **Complexity**: Does the added context increase the question's complexity and depth?
-4. **Creativity**: Assess the originality and creativity of the questions.
+0. **Visual Attributes**: Ensure this question necessitates referencing the image alongside the text. If it can be answered by the text alone, it fails to meet the standards and should be heavily criticized.
+1. **Contextual Necessity**: Evaluate how effectively the question incorporates additional context from the paper.
+2. **Dependency**: Confirm that the question requires the research paper's context for an answer. If the question can be answered solely from the caption, it should be heavily criticized. Additionally, ensure the context is not already provided within the question itself; reading the research paper must always be essential.
+3. **Complexity**: Determine if the added context enhances the question's complexity and depth.
+4. **Creativity**: Assess the originality and creativity of the questions. It should involve analyzing and questioning the image with additional context, identifying trends, and discovering explanations or similar methods.
 
 ### Feedback on Answers:
 
@@ -87,27 +88,28 @@ You will find the metadata at the end of this message.
 
 ### Grading Schemes:
 
-**For Questions:**
+### **For Each Question:**
 
-| Criterion                  | Excellent (3)    | Good (2)          | Needs Improvement (1) | Poor (0)           |
-|----------------------------|------------------|-------------------|-----------------------|--------------------|
-| Visual Attributes          | Clearly visual   | Mostly visual     | Partially visual      | Not visual         |
-| Category Coverage          | All categories   | Most categories   | Some categories       | Few/None categories|
-| Relevance and Fit          | Very relevant    | Mostly relevant   | Somewhat relevant     | Not relevant       |
-| Clarity and Unambiguity    | Clear, one answer| Clear, minor ambiguity | Some ambiguity   | Very ambiguous     |
-| Accurately answerable      | Negligible imprecision | Minor imprecision | Medium/High imprecision | Not answerable |
-| Complexity Appropriateness | Perfectly fits   | Mostly fits       | Some fit issues       | Does not fit       |
-| Language Precision         | Very precise     | Good precision    | Some errors           | Many errors        |
-| Variety                    | Great variety    | Good variety      | Some variety          | Little variety     |
+| **Criterion**                  | **Excellent (3)**                             | **Good (2)**                                      | **Needs Improvement (1)**                           | **Poor (0)**                                        |
+|--------------------------------|-----------------------------------------------|--------------------------------------------------|-----------------------------------------------------|-----------------------------------------------------|
+| **Visual Attributes**          | Genuinely visual; requires examining the image's visual attributes (e.g., color, position, orientation) | Mostly visual; primarily relies on visual attributes but can partly be answered without them | Partially visual; minimal reliance on visual attributes | Not visual; can be answered without examining visual attributes |
+| **Category Coverage**          | Perfectly matches one of the intended categories (e.g., "Simple Retrieval", "Simple Calculation", "Complex Calculation and Logical Reasoning", "Additional Context Question") | Largely matches one of the intended categories, with slight deviations | Somewhat aligns with an intended category, but has noticeable deviations | Does not match any intended category |
+| **Relevance and Fit**          | Highly relevant; perfectly fits the figure and relates to visual elements | Mostly relevant; generally fits the figure and relates to visual elements | Somewhat relevant; partial fit to the figure and visual elements | Not relevant; does not fit the figure or visual elements |
+| **Clarity and Unambiguity**    | Very clear and unambiguous; allows for only one correct answer | Clear; minor ambiguity | Some ambiguity | Very ambiguous; allows for multiple interpretations |
+| **Accurately Answerable**      | Can be answered accurately using the image and metadata with negligible imprecision | Can be answered accurately with minor imprecision | Medium/high imprecision in answers | Cannot be answered accurately; very imprecise |
+| **Complexity Appropriateness** | Perfectly matches the intended complexity level (simple, one-step, complex, reasoning) | Mostly matches the intended complexity level | Some fit issues with intended complexity level | Does not match the intended complexity level |
+| **Language Precision**         | Very precise; clear, grammatically correct, and free of errors | Good precision; mostly clear and grammatically correct | Some errors in clarity and grammar | Many errors; unclear and grammatically incorrect |
+| **Variety**                    | Great variety; diverse question types and difficulty levels | Good variety; some diversity in question types and difficulty levels | Some variety in question types and difficulty levels | Little to no variety; lacks diversity in question types and difficulty levels |
+
 
 **For Questions with Additional Context:**
 
-| Criterion            | Excellent (3)      | Good (2)         | Needs Improvement (1) | Poor (0)            |
-|----------------------|--------------------|------------------|-----------------------|---------------------|
-| Contextual Necessity | Very necessary     | Mostly necessary | Somewhat necessary    | Not necessary       |
-| Dependency           | Strong dependency  | Moderate dependency | Some dependency   | No dependency       |
-| Complexity           | Adds high complexity | Adds some complexity | Adds little complexity | Adds no complexity |
-| Creativity           | Very creative      | Some creativity  | Little creativity     | Not creative        |
+| **Criterion**         | **Excellent (3)**    | **Good (2)**      | **Needs Improvement (1)** | **Poor (0)**         |
+|-----------------------|----------------------|-------------------|--------------------------|----------------------|
+| **Contextual Necessity** | Essential; cannot be answered without additional context from the paper | Mostly necessary but can be partly understood without context | Somewhat necessary; minimal context needed | Not necessary; can be answered without any additional context, including the caption |
+| **Dependency**        | Strongly relies on the full research paper's context | Moderately relies on research paper context | Some dependency on research paper context | No dependency on research paper context; can be answered by caption alone |
+| **Complexity**        | Significantly increases complexity and depth | Moderately adds complexity and depth | Slightly adds complexity | Does not add any complexity; can be answered by caption alone |
+| **Creativity**        | Highly original and creative; deeply analyzes image with context | Moderately creative; analyzes image with some context | Limited creativity; minimal analysis with context | Not creative; does not analyze the image with context |
 
 **For Answers:**
 
@@ -122,5 +124,6 @@ You will find the metadata at the end of this message.
 ### Final Evaluation:
 
 For each question-answer pair, provide the grading and an explanation based on the above criteria. Clearly state the strengths and areas for improvement for each pair.
-For the question with additional context make sure the question actually requires context from the paper (or inline reference), give the section (or part of a section) as full text from the paper that is necessary to answer the question!
-This ensures that one actually has to read parts of the paper to answer this type of question.
+For the question with additional context make sure the question actually requires context from the paper, give the section (or part of a section) as full text from the paper that is necessary to answer the question!
+The caption doesn't count as additional context! This ensures that one actually has to read parts of the paper to answer this type of question.
+If the additional context question falls fails the criteria, provide ideas for a different question or how this question can be improved to pass the criteria.

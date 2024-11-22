@@ -12,7 +12,7 @@ You will be provided with:
 
 1. **Generate Independent Answers Using Enhanced Techniques**:
    - Independently generate your own answers to each of the provided questions based on the associated figure or image. Utilize the following techniques:
-     - **Chain-of-Thought Prompting**: Break down the problem into smaller steps and reason through each step methodically to arrive at the final answer.
+     - **Chain-of-Thought Prompting**: Break down the problem into smaller steps and reason through each step methodically to arrive at the final answer. For questions that require additional context: find the relevant text and include it in your chain-of-thought.
      - **Self-Consistency**: Generate multiple answers independently and select the most consistent one.
      - **Error Analysis**: After generating an initial answer, review and refine it by identifying and correcting any potential mistakes.
 

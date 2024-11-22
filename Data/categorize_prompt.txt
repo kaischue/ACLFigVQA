@@ -14,7 +14,7 @@
      - Positional: "What is the topmost bar in the chart?"
      - Color: "What is the value of the green bar?"
 
-2. **Simple Calculation (1-Step)**:
+2. **Simple Calculation**:
    - **Focus**: Performing one arithmetic operation (addition, subtraction, multiplication, division, ratio, or a simple comparison like "greater than") on one or two data points identified by their position or color.
    - **Criteria**:
      - Involves a single arithmetic operation.
@@ -36,11 +36,17 @@
 
 4. **Caption Question**
    - **Focus**: The question can be answered using the figure and the caption only. The relevant paper section is not needed for this question.
+   Depending on the complexity of the question, this must be combined with categories 1-3.
+   These categories exist:
+   Caption Question/Simple Retrival
+   Caption Question/Simple Calculation
+   Caption Question/Complex Calculation and Logical Reasoning
    - **Criteria**:
-     - Can be of any complexity.
-     - Needs answerable from the caption (and figure)
+     - Can be of any complexity, but needs to be combined with categories 1-3.
+     - Needs to be answerable from the caption (and figure)
+     - If the question can be answered with the image alone, classify it as the categories 1-3 only
 
-5. **Questions Requiring Additional Context from the research paper**:
+5. **Requires Paper Context**:
    - **Focus**: These questions require background information or context from the relevant paper.
    This always involves consulting the provided research paper in the metadata string.
    - **Criteria**:
@@ -71,11 +77,13 @@ img_file_name;question_german;question_english;corrected_answer_german;corrected
 
 ### Example Rows:
 2007.sigdial-1.12.pdf-Figure4.png;Welche Farbe repräsentiert die Datenreihe mit der Beschriftung 'n = 2'?;What color represents the data series with the label 'n = 2'?;Cyan;Cyan;Simple Retrieval;""
-2007.sigdial-1.12.pdf-Figure4.png;"Wie viele Datenreihen liegen über der diagonalen Linie, die eine zufällige Zufallsauswahl darstellt, wenn der FPR-Wert 0,4 beträgt?";"At an FPR value of 0.4, how many data series are performing better than random, represented by the diagonal line?";"7 Datenreihen liegen bei einem FPR-Wert von 0,4 über der diagonalen 'Zufallslinie'.";7 data series are performing better than random at an FPR of 0.4.;Simple Calculation (1-Step);""
-2007.sigdial-1.12.pdf-Figure4.png;"In Anbetracht der Beschreibung der Fallstudie 1 im Forschungspapier, bei der ein großes Trainingsdatenset und ein kleines Testset verwendet wurden, welche Schlussfolgerung lässt sich aus der Leistung der Datenreihe 'n=6' im Vergleich zu den anderen Datenreihen in Abbildung 4 ziehen?";"Considering the research paper's description of Case 1, using a large training dataset and a small testing set, what inference can be drawn from the performance of the 'n=6' data series compared to the others in Figure 4?";"In Fall 1, mit einem großen Trainingsdatensatz, schneidet 'n=6' gut ab und liegt nahe an den Spitzenreitern. Das deutet darauf hin, dass bei umfangreichen Trainingsdaten die Wahl eines höheren 'n' für die Leistung von Vorteil sein kann.";"In Case 1, with a large training dataset, 'n=6' performs well, closely grouped with the top performers. This suggests that with ample training data, selecting a higher 'n' can be beneficial for performance.";Questions Requiring Additional Context;"We tested the performance of our _n*-best method_ on two datasets. The first dataset contains 1178 user utterances and the second one contains 471 utterances. We use these two sets to simulate two situations: Case 1, a large training data and a small testing set; **Case 2, a small training data and a** large testing set."
+2007.sigdial-1.12.pdf-Figure4.png;"Wie viele Datenreihen liegen über der diagonalen Linie, die eine zufällige Zufallsauswahl darstellt, wenn der FPR-Wert 0,4 beträgt?";"At an FPR value of 0.4, how many data series are performing better than random, represented by the diagonal line?";"7 Datenreihen liegen bei einem FPR-Wert von 0,4 über der diagonalen 'Zufallslinie'.";7 data series are performing better than random at an FPR of 0.4.;Simple Calculation;""
+2007.sigdial-1.12.pdf-Figure4.png;"In Anbetracht der Beschreibung der Fallstudie 1 im Forschungspapier, bei der ein großes Trainingsdatenset und ein kleines Testset verwendet wurden, welche Schlussfolgerung lässt sich aus der Leistung der Datenreihe 'n=6' im Vergleich zu den anderen Datenreihen in Abbildung 4 ziehen?";"Considering the research paper's description of Case 1, using a large training dataset and a small testing set, what inference can be drawn from the performance of the 'n=6' data series compared to the others in Figure 4?";"In Fall 1, mit einem großen Trainingsdatensatz, schneidet 'n=6' gut ab und liegt nahe an den Spitzenreitern. Das deutet darauf hin, dass bei umfangreichen Trainingsdaten die Wahl eines höheren 'n' für die Leistung von Vorteil sein kann.";"In Case 1, with a large training dataset, 'n=6' performs well, closely grouped with the top performers. This suggests that with ample training data, selecting a higher 'n' can be beneficial for performance.";Requires Paper Context;"We tested the performance of our _n*-best method_ on two datasets. The first dataset contains 1178 user utterances and the second one contains 471 utterances. We use these two sets to simulate two situations: Case 1, a large training data and a small testing set; **Case 2, a small training data and a** large testing set."
 
 ### Final Submission:
 
+- Here are the categories again you must choose from: Simple Retrival, Simple Calculation, Complex Calculation and Logical Reasoning, Caption Question/Simple Retrival, Caption Question/Simple Calculation, Caption Question/Complex Calculation and Logical Reasoning, Requires Paper Context
+- Only use the combined Caption Question categories if the caption is really needed to answer the question
 - For each question, provide the corrected answer along with the assigned category and the relevant context (if applicable).
 - Ensure that the final CSV response includes only the following columns: img_file_name, question_german, question_english, corrected_answer_german, corrected_answer_english, category, context.
 - The context column should contain the necessary section from the paper for questions requiring additional context.
