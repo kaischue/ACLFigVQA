@@ -30,6 +30,8 @@ class App:
         self.dataset = list(get_dataset_split_generator(only_visual=True, split="train"))
         self.dataset_train_length = len(self.dataset)
         self.dataset += list(get_dataset_split_generator(only_visual=True, split="validation"))
+        self.dataset_validation_length = len(self.dataset) - self.dataset_train_length
+        self.dataset += list(get_dataset_split_generator(only_visual=True, split="test"))
         self.image_index = 0
         self.question_index = 0
         self.unique_images = df['img_file_name'].unique()
@@ -168,6 +170,8 @@ class App:
 
         if self.image_index >= self.dataset_train_length:
             self.current_split = "val"
+        if self.image_index >= self.dataset_train_length + self.dataset_validation_length:
+            self.current_split = "test"
         # Fetch corresponding dataset sample
         metadata = self.dataset[self.image_index]
         image_path = f"Data\\VQAMeta\\training_data\\{self.current_split}\\{metadata['label']}\\{metadata['img_file_name']}"

@@ -14,7 +14,7 @@ from utils import load_yaml_to_dict, shuffle_lists_in_dict, find_first_mention_o
 
 GEMINI_MODEL = "gemini-1.5-pro-latest"
 # GEMINI_MODEL = "gemini-1.5-flash-latest"
-SPLIT = "validation"
+SPLIT = "test"
 
 TEMPLATE_FILE = "Data\\vqa_templates_merged.yaml"
 QA_GEN_CSV_FILE_REV1 = "Data\\qa_gen\\rev1\\qa_gen.csv"
