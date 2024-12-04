@@ -21,24 +21,31 @@ def clean_context(df: DataFrame, path):
 if __name__ == '__main__':
     model = GeminiModel()
 
-    dataset_train_gen = iter(get_dataset_split_generator(only_visual=True, split="train"))
-    # dataset_val_gen = get_dataset_split_generator(only_visual=True, split="validation")
-    # dataset_test_gen = get_dataset_split_generator(only_visual=True, split="test")
+    # dataset = iter(get_dataset_split_generator(only_visual=True, split="train"))
+    # dataset = get_dataset_split_generator(only_visual=True, split="validation")
+    dataset = get_dataset_split_generator(only_visual=True, split="test")
 
     validated_csv_path = 'validated_answers.csv'
     validated_df = pd.read_csv(validated_csv_path, encoding='utf-8')
 
-    validated_answers_cat_path = "validated_answers_cat.csv"
+    validated_df.drop(columns=['answer_german', 'answer_english', 'chain_of_thought', 'chain_of_thought2', 'confidence',
+                               'confidence_explanation'], inplace=True)
+    # drop rows of filtered out questions
+    validated_df.drop(validated_df[(validated_df['corrected_answer_german'] == 'True') & (validated_df['corrected_answer_english'] == 'True')].index, inplace=True)
+
+    validated_answers_cat_path = "validated_answers_test_cat.csv"
     validated_df_cat = pd.read_csv(validated_answers_cat_path, encoding='utf-8', sep=";", )
 
     try:
         while True:
-            ds_sample = next(dataset_train_gen)
+            ds_sample = next(dataset)
 
             if not validated_df_cat.loc[validated_df_cat['img_file_name'] == ds_sample["img_file_name"]].empty:
                 continue
 
             sample_df = validated_df[validated_df['img_file_name'] == ds_sample['img_file_name']]
+            if sample_df.empty:
+                continue
             sample_df_csv = sample_df.to_csv(sep=";")
 
             response = model.categorize_qa(ds_sample, sample_df_csv)

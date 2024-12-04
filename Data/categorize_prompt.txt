@@ -1,7 +1,7 @@
 ### Refined Task Instructions:
 
-1. Review the provided questions, their answers, and any corrected answers.
-2. Assign each question to one of the following categories based on the given definitions:
+1. Assign each question to one of the following categories based on the given definitions
+2. Provide a short form Answer for every question
 
 ### Categories:
 
@@ -59,6 +59,24 @@
      - If the question can be answered form the caption alone, it does not meet the criteria of "Questions Requiring Additional Context from the research paper". Classify it as another category then.
      - Provide the necessary section (or part of a section) from the paper as full text required to answer the question. Add this section as an additional column "context".
 
+### Short form Answer
+- For each question, provide an additional short-form answer.
+- The short answer should be as concise as possible. Ideally, one word or a numerical value (e.g., Yes, No, a number, Smaller, Larger).
+- The short answer must still make sense as a standalone response to the question.
+- For questions requiring additional context, shorten the answer if feasible; if not, use the full answer.
+- The short-form answer should match the corrected answer in meaning (just shorter).
+- Present the answers in two columns: 'short_answer_english' and 'short_answer_german'.
+
+Example:
+
+| question                                 | long_answer                            | short_answer_english | short_answer_german |
+|------------------------------------------|----------------------------------------|----------------------|---------------------|
+| Is the sky blue?                         | Yes, the sky is blue.                  | Yes                  | Ja                  |
+| How much is 2 plus 2?                    | The result of 2 plus 2 is 4.           | 4                    | 4                   |
+| What is the capital of France?           | The capital of France is Paris.        | Paris                | Paris               |
+| Can you explain photosynthesis in brief? | Photosynthesis is the process by which plants convert sunlight into energy. | Photosynthesis: plant energy conversion from sunlight. | Photosynthese: Umwandlung von Sonnenlicht in Energie. |
+
+
 ### Metadata String:
 You will receive the image, generated question-answer pairs, metadata string which includes a relevant paper section ({relevant_pdf_str}). The metadata string is structured as follows:
 
@@ -73,21 +91,21 @@ You will receive the image, generated question-answer pairs, metadata string whi
 You will find the metadata at the end of this message.
 
 ### Header:
-img_file_name;question_german;question_english;corrected_answer_german;corrected_answer_english;category;context
+img_file_name;question_german;question_english;corrected_answer_german;corrected_answer_english;short_answer_german;short_answer_english;category;context
 
 ### Example Rows:
-2007.sigdial-1.12.pdf-Figure4.png;Welche Farbe repräsentiert die Datenreihe mit der Beschriftung 'n = 2'?;What color represents the data series with the label 'n = 2'?;Cyan;Cyan;Simple Retrieval;""
-2007.sigdial-1.12.pdf-Figure4.png;"Wie viele Datenreihen liegen über der diagonalen Linie, die eine zufällige Zufallsauswahl darstellt, wenn der FPR-Wert 0,4 beträgt?";"At an FPR value of 0.4, how many data series are performing better than random, represented by the diagonal line?";"7 Datenreihen liegen bei einem FPR-Wert von 0,4 über der diagonalen 'Zufallslinie'.";7 data series are performing better than random at an FPR of 0.4.;Simple Calculation;""
-2007.sigdial-1.12.pdf-Figure4.png;"In Anbetracht der Beschreibung der Fallstudie 1 im Forschungspapier, bei der ein großes Trainingsdatenset und ein kleines Testset verwendet wurden, welche Schlussfolgerung lässt sich aus der Leistung der Datenreihe 'n=6' im Vergleich zu den anderen Datenreihen in Abbildung 4 ziehen?";"Considering the research paper's description of Case 1, using a large training dataset and a small testing set, what inference can be drawn from the performance of the 'n=6' data series compared to the others in Figure 4?";"In Fall 1, mit einem großen Trainingsdatensatz, schneidet 'n=6' gut ab und liegt nahe an den Spitzenreitern. Das deutet darauf hin, dass bei umfangreichen Trainingsdaten die Wahl eines höheren 'n' für die Leistung von Vorteil sein kann.";"In Case 1, with a large training dataset, 'n=6' performs well, closely grouped with the top performers. This suggests that with ample training data, selecting a higher 'n' can be beneficial for performance.";Requires Paper Context;"We tested the performance of our _n*-best method_ on two datasets. The first dataset contains 1178 user utterances and the second one contains 471 utterances. We use these two sets to simulate two situations: Case 1, a large training data and a small testing set; **Case 2, a small training data and a** large testing set."
+2007.sigdial-1.12.pdf-Figure4.png;Welche Farbe repräsentiert die Datenreihe mit der Beschriftung 'n = 2'?;What color represents the data series with the label 'n = 2'?;Cyan;Cyan;Cyan;Cyan;Simple Retrieval;""
+2007.sigdial-1.12.pdf-Figure4.png;"Wie viele Datenreihen liegen über der diagonalen Linie, die eine zufällige Zufallsauswahl darstellt, wenn der FPR-Wert 0,4 beträgt?";"At an FPR value of 0.4, how many data series are performing better than random, represented by the diagonal line?";"7 Datenreihen liegen bei einem FPR-Wert von 0,4 über der diagonalen 'Zufallslinie'.";7 data series are performing better than random at an FPR of 0.4.;7;7;Simple Calculation;""
+2007.sigdial-1.12.pdf-Figure4.png;"In Anbetracht der Beschreibung der Fallstudie 1 im Forschungspapier, bei der ein großes Trainingsdatenset und ein kleines Testset verwendet wurden, welche Schlussfolgerung lässt sich aus der Leistung der Datenreihe 'n=6' im Vergleich zu den anderen Datenreihen in Abbildung 4 ziehen?";"Considering the research paper's description of Case 1, using a large training dataset and a small testing set, what inference can be drawn from the performance of the 'n=6' data series compared to the others in Figure 4?";"In Fall 1, mit einem großen Trainingsdatensatz, schneidet 'n=6' gut ab und liegt nahe an den Spitzenreitern. Das deutet darauf hin, dass bei umfangreichen Trainingsdaten die Wahl eines höheren 'n' für die Leistung von Vorteil sein kann.";"In Case 1, with a large training dataset, 'n=6' performs well, closely grouped with the top performers. This suggests that with ample training data, selecting a higher 'n' can be beneficial for performance.";;;Requires Paper Context;"We tested the performance of our _n*-best method_ on two datasets. The first dataset contains 1178 user utterances and the second one contains 471 utterances. We use these two sets to simulate two situations: Case 1, a large training data and a small testing set; **Case 2, a small training data and a** large testing set."
 
 ### Final Submission:
 
 - Here are the categories again you must choose from: Simple Retrival, Simple Calculation, Complex Calculation and Logical Reasoning, Caption Question/Simple Retrival, Caption Question/Simple Calculation, Caption Question/Complex Calculation and Logical Reasoning, Requires Paper Context
 - Only use the combined Caption Question categories if the caption is really needed to answer the question
-- For each question, provide the corrected answer along with the assigned category and the relevant context (if applicable).
-- Ensure that the final CSV response includes only the following columns: img_file_name, question_german, question_english, corrected_answer_german, corrected_answer_english, category, context.
+- For each question, provide the corrected answer (which is already given) along with the assigned category and the relevant context (if applicable).
+- Also provide a short form answer for each question in German and English
+- Ensure that the final CSV response includes only the following columns: img_file_name, question_german, question_english, corrected_answer_german, corrected_answer_english, short_answer_german, short_answer_english, category, context.
 - The context column should contain the necessary section from the paper for questions requiring additional context.
-- If the corrected_answer_german and corrected_answer_english both say "True," the question is invalid and should be ignored.
 - Return only the rows in the final submission, with nothing else included, so it can be directly parsed from the output.
-- Feel free to fix any obvious spelling mistakes or grammatical errors
+- Feel free to fix any obvious spelling mistakes or grammatical errors. But don't change the answers. You can assume that all given answers are correct.
 - Use ; as separators
