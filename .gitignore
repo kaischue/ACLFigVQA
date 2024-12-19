@@ -3,3 +3,6 @@ constants.py
 /Data/VQAMeta/
 /Data/qa_gen
 /Data/sample_qa
+/artifacts/
+/Data/VQAMetaQA/
+/wandb/
