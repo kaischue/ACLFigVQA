@@ -2,13 +2,17 @@ import torch
 from datasets import load_from_disk
 from tqdm import tqdm
 from transformers import PaliGemmaForConditionalGeneration, PaliGemmaProcessor, LlavaNextProcessor, \
-    LlavaNextForConditionalGeneration, Blip2Processor, Blip2ForConditionalGeneration
+    LlavaNextForConditionalGeneration, Blip2Processor, Blip2ForConditionalGeneration, AutoModelForCausalLM
 
 import wandb
 from constants import WANDB_API_KEY
+from tinychart.eval.eval_metric import parse_model_output, evaluate_cmds
+from tinychart.eval.run_tiny_chart import inference_model
+from tinychart.mm_utils import get_model_name_from_path
+from tinychart.model.builder import load_pretrained_model
 from utils import replace_all_linebreaks_with_spaces
 
-global model_id, model, processor
+global model_id, model, processor, tokenizer, context_len
 
 
 def run_paligemma(image, question, metadata_str, lang):
@@ -88,6 +92,16 @@ def run_blip(image, question, metadata_str, lang):
 
     return prediction
 
+def run_tinychart(image, question, metadata_str, lang):
+    if len(metadata_str) > 0:
+        prompt = f"{metadata_str} {question}"
+    else:
+        prompt = f"{question}"
+
+    response = inference_model([image], prompt, model, tokenizer, processor, context_len, conv_mode="phi",
+                               max_new_tokens=512)
+
+    return response
 
 def predict_dataset(split, lang, metadata, model_name, predict_func):
     if not metadata:
@@ -183,6 +197,18 @@ def init_blip(idd):
         idd, load_in_8bit=True, device_map={"": 0}, torch_dtype=torch.float16
     )
 
+def init_tinychart(idd):
+    global model_id
+    model_id = idd
+
+    global model, processor, tokenizer, context_len
+    tokenizer, model, processor, context_len = load_pretrained_model(
+        model_id,
+        model_base=None,
+        model_name=get_model_name_from_path(model_id),
+        device="cuda"
+    )
+
 
 if __name__ == '__main__':
     # Initialize Weights and Biases
@@ -193,16 +219,24 @@ if __name__ == '__main__':
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
     # init_blip("Salesforce/blip2-opt-2.7b")
-    # init_paligemma("google/paligemma-3b-mix-448")
-    init_llava("llava-hf/llava-v1.6-vicuna-7b-hf")
+    #init_paligemma("kaischue/paligemma2-3b-pt-448-vis-ACLFigQA-de")
+    #init_llava("llava-hf/llava-v1.6-vicuna-7b-hf")
+    init_tinychart("mPLUG/TinyChart-3B-768")
 
-    # predict_dataset(split="val", lang="en", metadata=True,
-    #                model_name=model_id.split('/')[-1], predict_func=run_paligemma)
-    # wandb.finish()
+    #for split in ["val", "test"]:
+    #    for meta in [False, True]:
+    #        predict_dataset(
+    #            split=split, lang="de", metadata=meta,
+    #            model_name=model_id.split('/')[-1], predict_func=run_paligemma
+    #        )
+    #        # Finish the run
+    #       wandb.finish()
 
     for split in ["train", "val", "test"]:
         for lang in ["en", "de"]:
-            predict_dataset(split=split, lang=lang, metadata=False,
-                            model_name=model_id.split('/')[-1], predict_func=run_llava)
+            predict_dataset(
+               split=split, lang=lang, metadata=True,
+               model_name=model_id.split('/')[-1], predict_func=run_tinychart
+            )
             # Finish the run
             wandb.finish()
