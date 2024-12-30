@@ -6,7 +6,6 @@ from pathlib import Path
 import google.generativeai as genai
 import json_repair
 import pandas
-from prompt_toolkit import prompt
 
 from constants import GEMINI_API_KEY
 from load_dataset_disc import get_dataset_split_generator
@@ -90,7 +89,6 @@ class GeminiModel:
 
         with open(EVAL_PRED_PROMPT, "r") as f:
             self.eval_pred_prompt = f.read()
-
 
         self.figure_mention_range = figure_mention_range
 
@@ -191,7 +189,6 @@ class GeminiModel:
 
         return self.model.generate_content(
             [self.categorize_prompt, f"\n\n{qa_row}\n\n", img, metadata_string])
-
 
     def try_fix_json(self, broken_json, error_msg):
         return self.model.generate_content(
