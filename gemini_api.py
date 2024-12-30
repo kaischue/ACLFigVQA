@@ -6,6 +6,7 @@ from pathlib import Path
 import google.generativeai as genai
 import json_repair
 import pandas
+from prompt_toolkit import prompt
 
 from constants import GEMINI_API_KEY
 from load_dataset_disc import get_dataset_split_generator
@@ -29,6 +30,7 @@ JSON_FIX_PROMPT2 = "Data\\json_fix_prompt2.txt"
 EVALUATE_PROMPT = "Data\\evaluate_prompt.txt"
 ANSWER_CONFIDENCE_PROMPT = "Data\\confidence_prompt.txt"
 CATEGORIZE_PROMPT = "Data\\categorize_prompt.txt"
+EVAL_PRED_PROMPT = "Data\\eval_prompt.txt"
 
 
 @dataclass
@@ -85,6 +87,10 @@ class GeminiModel:
 
         with open(CATEGORIZE_PROMPT, "r") as f:
             self.categorize_prompt = f.read()
+
+        with open(EVAL_PRED_PROMPT, "r") as f:
+            self.eval_pred_prompt = f.read()
+
 
         self.figure_mention_range = figure_mention_range
 
@@ -195,6 +201,10 @@ class GeminiModel:
         return self.model.generate_content(
             [self.json_fix_prompt2, "Here is the json, i tried to parse: \n" + str(broken_json),
              "This is the error message i got: \n" + error_msg])
+
+    def eval_answer(self, question, pred_answer, gt_answer):
+        new_prompt = f"{self.eval_pred_prompt}Question: {question}\nGround-truth answer: {gt_answer}\nPrediction:  {pred_answer}\n\nCompareGPT response:"
+        return self.model.generate_content([new_prompt])
 
 
 def write_row_to_csv(csv_path, row, mode='a'):
