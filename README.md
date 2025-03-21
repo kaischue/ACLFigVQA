@@ -1,5 +1,5 @@
 ## Dataset Access
-The dataset is available for download [here](https://huggingface.co/datasets/kaischue/ACLFigVQA).
+The ACLFigVQA dataset is available for download [here](https://huggingface.co/datasets/kaischue/ACLFigVQA).
 
 ## Fine-tuned PaliGemma2 models
 ### German
@@ -37,3 +37,6 @@ Use the validate tool to manually validate the QA Pairs: ```python validation_to
 - To evaluate QA Pairs generates by Gemini use: ```eval_gemini.py```
 - To evaluate models on ROUGE, BLEU, BERT and METEOR scores use: ```eval_metrics.py```
 - To evaluate models with GeminiEval use: ```gemini_eval.py```
+
+### Finetune PaliGemma
+Use the ```Fine_tune_PaliGemma.ipynb``` to finetune PaliGemma2 with the ACLFigVQA dataset
