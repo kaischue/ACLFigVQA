@@ -13,7 +13,7 @@ The ACLFigVQA dataset is available for download [here](https://huggingface.co/da
 ## Installation
 To set up the environment, follow these steps:
 
-1. Clone the repository: ```git clone https://github.com/kaischue/VQA-sci-fig-cl.git```
+1. Clone the repository: ```git clone https://github.com/kaischue/ACLFigVQA.git```
 2. Install the required dependencies: ```conda env create -f env_conda.yml```
 
 
