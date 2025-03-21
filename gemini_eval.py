@@ -14,26 +14,19 @@ if __name__ == '__main__':
     api = wandb.Api()
     runs = api.runs(f"{WANDB_USERNAME}/{WANDB_PROJECT}")
 
-    table_version = "v0"
-
     run_id = None
     for run in runs:
-        if run.name.endswith("context"):
+        if "blip2" in run.name and "context" in run.name:
             run_id = run.id
 
             run = wandb.init(project=WANDB_PROJECT, name=run.name, id=run_id, resume="must")
             r = api.run(f"{WANDB_USERNAME}/{WANDB_PROJECT}/{run_id}")
-            table_dict = None
-            for log in r.scan_history():
-                if "prediction_table" in log:
-                    table_dict = log["prediction_table"]
-                    n_rows = table_dict['nrows']
 
-            if table_dict is None:
-                wandb.finish()
-                continue
-
-            artifact_name = f'{WANDB_USERNAME}/{WANDB_PROJECT}/run-{run_id}-prediction_table:{table_version}'
+            artifact_name = f'{WANDB_USERNAME}/{WANDB_PROJECT}/run-{run_id}-prediction_table'
+            artifact_versions = api.artifact_versions('run_table', artifact_name)
+            latest_version = sorted(artifact_versions, key=lambda v: v.version, reverse=True)[0].version
+            artifact_name = f'{artifact_name}:{latest_version}'
+            print("latest version:", latest_version)
             artifact = run.use_artifact(artifact_name, type='run_table')
             artifact_dir = artifact.download()
 
@@ -81,7 +74,7 @@ if __name__ == '__main__':
 
                 print(f"Pred Answer: {predicted_answer}, Gt Answer: {true_answer}, Eval Response: {eval_response}")
 
-                row[1] = wandb.Image(f"artifacts/run-{run_id}-prediction_table-{table_version}/{row[1]['path']}")
+                row[1] = wandb.Image(f"artifacts/run-{run_id}-prediction_table-{latest_version}/{row[1]['path']}")
                 if len(row) == len(columns) - 1:  # If eval_response column was added
                     row.append(eval_response)
                 else:

@@ -1,18 +1,15 @@
 import numpy as np
 import pandas as pd
-import wandb
 from bert_score import score
 from nltk.tokenize import word_tokenize
 from nltk.translate.bleu_score import sentence_bleu, SmoothingFunction
 from nltk.translate.meteor_score import meteor_score
 from rouge import Rouge
 
+import wandb
 from constants import WANDB_API_KEY
 
-if __name__ == '__main__':
-    wandb.login(key=WANDB_API_KEY)
-    wandb.init(project="VQA", name="GeminiVQA")
-
+def eval_gemini(split):
     validated_csv_path = 'validated_answers.csv'
     validated_df = pd.read_csv(validated_csv_path, encoding='utf-8')
 
@@ -26,6 +23,38 @@ if __name__ == '__main__':
     validated_df['answer_german'].fillna('NaN', inplace=True)
     validated_df['corrected_answer_german'].fillna('NaN', inplace=True)
 
+    if split == 'train':
+        validated_df_cat = pd.read_csv('validated_answers_cat.csv', sep=';')
+    elif split == 'validation':
+        validated_df_cat = pd.read_csv('validated_answers_val_cat.csv', sep=';')
+    elif split == 'test':
+        validated_df_cat = pd.read_csv('validated_answers_test_cat.csv', sep=';')
+    else:
+        return
+
+    wandb.login(key=WANDB_API_KEY)
+    wandb.init(project="VQA", name=f"GeminiVQA-{split}")
+    # Create question -> category mappings for both languages
+    german_question_map = validated_df_cat.set_index('question_german')['category'].to_dict()
+    english_question_map = validated_df_cat.set_index('question_english')['category'].to_dict()
+
+    # Filter validated_df to only include questions present in either language in the cat_train data
+    mask = (
+            validated_df['question_german'].isin(german_question_map.keys()) |
+            validated_df['question_english'].isin(english_question_map.keys()) |
+            validated_df['question_english'].isin(german_question_map.keys()) |
+            validated_df['question_german'].isin(english_question_map.keys())
+    )
+    validated_df = validated_df[mask].copy()
+
+    # Add category column by checking both language versions
+    validated_df['category'] = validated_df.apply(
+        lambda row: (
+                german_question_map.get(row['question_german']) or
+                english_question_map.get(row['question_english'])
+        ),
+        axis=1
+    )
 
     # Function to calculate BLEU score for each pair of answers
     def calculate_bleu_score(candidate, reference):
@@ -34,9 +63,7 @@ if __name__ == '__main__':
         smoothie = SmoothingFunction().method4
         return sentence_bleu(reference_tokens, candidate_tokens, smoothing_function=smoothie)
 
-
     rouge = Rouge()
-
 
     def calculate_rouge_scores(candidate, reference):
         if candidate and reference:
@@ -45,7 +72,6 @@ if __name__ == '__main__':
         else:
             return None
 
-
     def calculate_meteor_score(candidate, reference):
         if candidate and reference:  # Ensure neither is empty
             candidate_tokens = word_tokenize(candidate)
@@ -53,7 +79,6 @@ if __name__ == '__main__':
             return meteor_score([reference_tokens], candidate_tokens)
         else:
             return None
-
 
     def calculate_accuracy(candidate: str, reference: str, candidate_de: str, reference_de: str):
         if candidate.lower().strip() == reference.lower().strip():
@@ -67,7 +92,6 @@ if __name__ == '__main__':
         else:
             return 0
 
-
     def calculate_combined_bleu_score(candidate, reference, candidate_de, reference_de):
         scores = [
             calculate_bleu_score(candidate, reference),
@@ -76,7 +100,6 @@ if __name__ == '__main__':
             calculate_bleu_score(candidate_de, reference)
         ]
         return max(scores)
-
 
     def calculate_combined_rouge_scores(candidate, reference, candidate_de, reference_de):
         scores = [
@@ -87,8 +110,7 @@ if __name__ == '__main__':
         ]
         return max(scores,
                    key=lambda s: (s['rouge-1']['f'], s['rouge-2']['f'], s['rouge-l']['f']) if s is not None else (
-                   0, 0, 0))
-
+                       0, 0, 0))
 
     def calculate_combined_meteor_score(candidate, reference, candidate_de, reference_de):
         scores = [
@@ -98,7 +120,6 @@ if __name__ == '__main__':
             calculate_meteor_score(candidate_de, reference)
         ]
         return max(scores)
-
 
     # Apply the combined score calculations to each pair of answers
     validated_df['bleu_score'] = validated_df.apply(
@@ -170,3 +191,5 @@ if __name__ == '__main__':
         "GeminiAccuracy": average_accuracy
     })
     wandb.finish()
+if __name__ == '__main__':
+    eval_gemini("validation")

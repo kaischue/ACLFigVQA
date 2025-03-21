@@ -1,18 +1,22 @@
 import torch
 from datasets import load_from_disk
 from tqdm import tqdm
+from transformers import AutoModelForCausalLM
 from transformers import PaliGemmaForConditionalGeneration, PaliGemmaProcessor, LlavaNextProcessor, \
-    LlavaNextForConditionalGeneration, Blip2Processor, Blip2ForConditionalGeneration, AutoModelForCausalLM
+    LlavaNextForConditionalGeneration, Blip2Processor, Blip2ForConditionalGeneration
 
 import wandb
 from constants import WANDB_API_KEY
-from tinychart.eval.eval_metric import parse_model_output, evaluate_cmds
+from janus.models import MultiModalityCausalLM, VLChatProcessor
+from janus.utils.io import load_pil_images
 from tinychart.eval.run_tiny_chart import inference_model
 from tinychart.mm_utils import get_model_name_from_path
 from tinychart.model.builder import load_pretrained_model
 from utils import replace_all_linebreaks_with_spaces
 
 global model_id, model, processor, tokenizer, context_len
+
+use_image_path = False
 
 
 def run_paligemma(image, question, metadata_str, lang):
@@ -25,7 +29,7 @@ def run_paligemma(image, question, metadata_str, lang):
     input_len = model_inputs["input_ids"].shape[-1]
 
     with torch.inference_mode():
-        generation = model.generate(**model_inputs, max_new_tokens=100, do_sample=False)
+        generation = model.generate(**model_inputs, max_new_tokens=512, do_sample=False)
         generation = generation[0][input_len:]
         decoded = processor.decode(generation, skip_special_tokens=True)
 
@@ -34,9 +38,9 @@ def run_paligemma(image, question, metadata_str, lang):
 
 def run_chartgemma(image, question, metadata_str, lang):
     if len(metadata_str) > 0:
-        prompt = f"<image> answer {metadata_str} {question}"
+        prompt = f"<image> answer {lang} {metadata_str} {question}"
     else:
-        prompt = f"<image> answer {question}"
+        prompt = f"<image> answer {lang} {question}"
 
     # Process Inputs
     inputs = processor(text=prompt, images=image, return_tensors="pt")
@@ -85,12 +89,13 @@ def run_blip(image, question, metadata_str, lang):
 
     inputs = processor(images=image, text=prompt, return_tensors="pt").to(device="cuda", dtype=torch.float16)
 
-    generated_ids = model.generate(**inputs)
+    generated_ids = model.generate(**inputs, max_new_tokens=512)
     generated_text = processor.batch_decode(generated_ids, skip_special_tokens=True)[0].strip()
 
     prediction = generated_text.split("Answer:")[1]
 
     return prediction
+
 
 def run_tinychart(image, question, metadata_str, lang):
     if len(metadata_str) > 0:
@@ -102,6 +107,47 @@ def run_tinychart(image, question, metadata_str, lang):
                                max_new_tokens=512)
 
     return response
+
+
+def run_deepseek_janus(image, question, metadata_str, lang):
+    if len(metadata_str) > 0:
+        prompt = f"{metadata_str} {question}"
+    else:
+        prompt = f"{question}"
+    conversation = [
+        {
+            "role": "<|User|>",
+            "content": f"<image_placeholder>\n{prompt}",
+            "images": [image],
+        },
+        {"role": "<|Assistant|>", "content": ""},
+    ]
+
+    # load images and prepare for inputs
+    pil_images = load_pil_images(conversation)
+    prepare_inputs = processor(
+        conversations=conversation, images=pil_images, force_batchify=True
+    ).to(model.device)
+
+    # # run image encoder to get the image embeddings
+    inputs_embeds = model.prepare_inputs_embeds(**prepare_inputs)
+
+    # # run the model to get the response
+    outputs = model.language_model.generate(
+        inputs_embeds=inputs_embeds,
+        attention_mask=prepare_inputs.attention_mask,
+        pad_token_id=tokenizer.eos_token_id,
+        bos_token_id=tokenizer.bos_token_id,
+        eos_token_id=tokenizer.eos_token_id,
+        max_new_tokens=512,
+        do_sample=False,
+        use_cache=True,
+    )
+
+    answer = tokenizer.decode(outputs[0].cpu().tolist(), skip_special_tokens=True)
+    # print(f"{prepare_inputs['sft_format'][0]}", answer)
+    return answer
+
 
 def predict_dataset(split, lang, metadata, model_name, predict_func):
     if not metadata:
@@ -120,6 +166,7 @@ def predict_dataset(split, lang, metadata, model_name, predict_func):
         context = example["context"]
         caption = example["caption"]
         image = example['image'].convert('RGB')
+        image_path = f"Data\\VQAMeta\\training_data\\{split}\\{label}\\{example['img_file_name']}"
         category = example['category']
         if lang == "en":
             true_answer = example['corrected_answer_english']
@@ -145,9 +192,15 @@ def predict_dataset(split, lang, metadata, model_name, predict_func):
 
             metadata_string = replace_all_linebreaks_with_spaces(metadata_string)
 
-            prediction = predict_func(image, question, metadata_string, lang)
+            if not use_image_path:
+                prediction = predict_func(image, question, metadata_string, lang)
+            else:
+                prediction = predict_func(image_path, question, metadata_string, lang)
         else:
-            prediction = predict_func(image, question, "", lang)
+            if not use_image_path:
+                prediction = predict_func(image, question, "", lang)
+            else:
+                prediction = predict_func(image_path, question, "", lang)
 
         print(question)
         print(f"prediction: {prediction} | true short_answer: {true_short_answer}")
@@ -197,6 +250,7 @@ def init_blip(idd):
         idd, load_in_8bit=True, device_map={"": 0}, torch_dtype=torch.float16
     )
 
+
 def init_tinychart(idd):
     global model_id
     model_id = idd
@@ -210,6 +264,22 @@ def init_tinychart(idd):
     )
 
 
+def init_deepseek_janus(idd):
+    global use_image_path
+    use_image_path = True
+
+    global model_id
+    model_id = idd
+
+    global tokenizer, model, processor
+    processor = VLChatProcessor.from_pretrained(idd)  # type: VLChatProcessor
+    tokenizer = processor.tokenizer
+
+    model = AutoModelForCausalLM.from_pretrained(idd, trust_remote_code=True)  # type: MultiModalityCausalLM
+
+    model = model.to(torch.bfloat16).cuda().eval()
+
+
 if __name__ == '__main__':
     # Initialize Weights and Biases
     wandb.login(key=WANDB_API_KEY)
@@ -218,25 +288,19 @@ if __name__ == '__main__':
 
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
-    # init_blip("Salesforce/blip2-opt-2.7b")
-    #init_paligemma("kaischue/paligemma2-3b-pt-448-vis-ACLFigQA-de")
-    #init_llava("llava-hf/llava-v1.6-vicuna-7b-hf")
-    init_tinychart("mPLUG/TinyChart-3B-768")
+    init_blip("Salesforce/blip2-opt-2.7b")
+    # init_paligemma("kaischue/paligemma2-3b-pt-448-vis-ACLFigQA-de")
+    # init_llava("llava-hf/llava-v1.6-vicuna-7b-hf")
+    # init_tinychart("mPLUG/TinyChart-3B-768")
+    # init_paligemma("kaischue/paligemma2-3b-pt-448-vis-ACLFigQA")
+    # init_deepseek_janus("deepseek-ai/Janus-Pro-7B")
 
-    #for split in ["val", "test"]:
-    #    for meta in [False, True]:
-    #        predict_dataset(
-    #            split=split, lang="de", metadata=meta,
-    #            model_name=model_id.split('/')[-1], predict_func=run_paligemma
-    #        )
-    #        # Finish the run
-    #       wandb.finish()
-
-    for split in ["train", "val", "test"]:
+    for metadata in [True]:
         for lang in ["en", "de"]:
-            predict_dataset(
-               split=split, lang=lang, metadata=True,
-               model_name=model_id.split('/')[-1], predict_func=run_tinychart
-            )
-            # Finish the run
-            wandb.finish()
+            for split in ["train", "val", "test"]:
+                predict_dataset(
+                    split=split, lang=lang, metadata=metadata,
+                    model_name=model_id.split('/')[-1], predict_func=run_blip
+                )
+                # Finish the run
+                wandb.finish()

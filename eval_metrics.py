@@ -1,19 +1,18 @@
-import time
-from tqdm import tqdm
-import wandb
-import os
 import json
-import pandas as pd
+import os
+import warnings
+
 import numpy as np
 from bert_score import score
+from nltk.tokenize import word_tokenize
+from nltk.translate.bleu_score import sentence_bleu, SmoothingFunction
 from nltk.translate.meteor_score import meteor_score
 from rouge import Rouge
-from nltk.translate.bleu_score import sentence_bleu, SmoothingFunction
-from nltk.tokenize import word_tokenize
+from tqdm import tqdm
 
+import wandb
 from constants import WANDB_USERNAME, WANDB_PROJECT
 
-import warnings
 warnings.filterwarnings("ignore", message=r"Some weights of (.*) were not initialized from the model checkpoint")
 warnings.filterwarnings("ignore", message=r"You should probably TRAIN this model on a downstream task")
 
@@ -24,7 +23,9 @@ def calculate_bleu_score(candidate, reference):
     smoothie = SmoothingFunction().method4
     return sentence_bleu(reference_tokens, candidate_tokens, smoothing_function=smoothie)
 
+
 rouge = Rouge()
+
 
 def calculate_rouge_scores(candidate, reference):
     if candidate and reference:
@@ -32,6 +33,7 @@ def calculate_rouge_scores(candidate, reference):
         return scores[0]
     else:
         return None
+
 
 def calculate_meteor_score(candidate, reference):
     if candidate and reference:  # Ensure neither is empty
@@ -41,14 +43,18 @@ def calculate_meteor_score(candidate, reference):
     else:
         return None
 
+
 if __name__ == '__main__':
     api = wandb.Api()
     runs = api.runs(f"{WANDB_USERNAME}/{WANDB_PROJECT}")
 
-    table_version = "latest"
     run_id = None
     for run in runs:
-        if run.name:
+        if "blip2" not in run.name:
+            continue
+        if "context" not in run.name:
+            continue
+        if "-en" in run.name:
             if "-en" in run.name:
                 lang = "en"
             else:
@@ -56,16 +62,6 @@ if __name__ == '__main__':
             run_id = run.id
             run = wandb.init(project=WANDB_PROJECT, name=run.name, id=run_id, resume="must")
             r = api.run(f"{WANDB_USERNAME}/{WANDB_PROJECT}/{run_id}")
-            table_dict = None
-            for log in r.scan_history():
-                if "prediction_table" in log:
-                    table_dict = log["prediction_table"]
-                    n_rows = table_dict['nrows']
-
-            if table_dict is None:
-                wandb.finish()
-                continue
-
             # List all versions of the artifact and find the latest version
             artifact_name = f'{WANDB_USERNAME}/{WANDB_PROJECT}/run-{run_id}-prediction_table'
             artifact_versions = api.artifact_versions('run_table', artifact_name)
